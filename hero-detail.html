@@ -1,0 +1,1307 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>英雄人物详情 - 抗战八十周年纪念</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        .hero-detail-container {
+            max-width: 900px;
+            margin: 120px auto 50px;
+            padding: 0 20px;
+        }
+        
+        .hero-detail-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 40px;
+            gap: 30px;
+        }
+        
+        .hero-detail-image {
+            width: 250px;
+            height: 250px;
+            border-radius: 10px;
+            object-fit: cover;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+        
+        .hero-detail-title {
+            flex: 1;
+        }
+        
+        .hero-detail-title h1 {
+            font-size: 2.2rem;
+            color: #c41e3a;
+            margin-bottom: 15px;
+        }
+        
+        .hero-detail-title .subtitle {
+            font-size: 1.2rem;
+            color: #666;
+            margin-bottom: 10px;
+        }
+        
+        .hero-detail-title .life-span {
+            font-size: 1rem;
+            color: #888;
+        }
+        
+        .hero-detail-content {
+            line-height: 1.8;
+            font-size: 1.1rem;
+        }
+        
+        .hero-timeline {
+            margin: 30px 0;
+            padding: 20px;
+            background: linear-gradient(135deg, rgba(196, 30, 58, 0.05) 0%, rgba(139, 0, 0, 0.05) 100%);
+            border-radius: 10px;
+        }
+        
+        .timeline-item {
+            margin-bottom: 15px;
+            padding-left: 20px;
+            border-left: 3px solid #c41e3a;
+        }
+        
+        .timeline-year {
+            font-weight: bold;
+            color: #c41e3a;
+            margin-bottom: 5px;
+        }
+        
+        .hero-significance {
+            background: linear-gradient(135deg, rgba(196, 30, 58, 0.1) 0%, rgba(139, 0, 0, 0.1) 100%);
+            border-left: 4px solid #c41e3a;
+            padding: 20px;
+            margin: 30px 0;
+            border-radius: 5px;
+            font-style: italic;
+        }
+        
+        /* 视频容器样式 */
+        .hero-video-section {
+            margin: 40px 0;
+            padding: 30px 0;
+            border-top: 1px solid #e0e0e0;
+        }
+        
+        .hero-video-title {
+            text-align: center;
+            font-size: 1.8rem;
+            color: #c41e3a;
+            margin-bottom: 25px;
+            position: relative;
+        }
+        
+        .hero-video-title::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80px;
+            height: 3px;
+            background: #c41e3a;
+        }
+        
+        .video-container {
+            position: relative;
+            width: 100%;
+            max-width: 800px;
+            margin:30px auto;
+             display: block;
+
+            
+        }
+        
+        .video-wrapper {
+            position: relative;
+            padding-bottom: 56.25%;
+            height: 0;
+            overflow: hidden;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            background: #000;
+        }
+        
+        .video-wrapper video {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+        }
+        
+        .video-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.6);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            color: white;
+            transition: opacity 0.3s ease;
+            z-index: 2;
+        }
+        
+        .video-overlay.hidden {
+            opacity: 0;
+            pointer-events: none;
+        }
+        
+        .play-button {
+            cursor: pointer;
+            transition: transform 0.3s ease;
+            margin-bottom: 10px;
+        }
+        
+        .play-button:hover {
+            transform: scale(1.15);
+        }
+
+   
+        
+        .video-info {
+            text-align: center;
+            margin-top: 20px;
+        }
+        
+        .video-info h3 {
+            font-size: 1.6rem;
+            margin-bottom: 10px;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.5);
+        }
+        
+        .video-info p {
+            font-size: 1rem;
+            opacity: 0.9;
+        }
+        
+        /* 视频控制栏样式 */
+        .video-controls {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: linear-gradient(transparent, rgba(0,0,0,0.9));
+            padding: 20px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            z-index: 5;
+        }
+        
+        .video-wrapper:hover .video-controls {
+            opacity: 1;
+        }
+        
+        /* 播放/暂停按钮 */
+        .play-pause-btn {
+            background: rgba(255,255,255,0.2);
+            border: none;
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+            color: white;
+            font-size: 18px;
+        }
+        
+        .play-pause-btn:hover {
+            background: rgba(255,255,255,0.3);
+            transform: scale(1.1);
+        }
+        
+        /* 进度条容器 */
+        .progress-container {
+            flex: 1;
+            height: 8px;
+            background: rgba(255,255,255,0.3);
+            border-radius: 4px;
+            cursor: pointer;
+            position: relative;
+        }
+        
+        .progress-bar {
+            height: 100%;
+            background: #c41e3a;
+            border-radius: 4px;
+            width: 0%;
+            transition: width 0.1s linear;
+            position: relative;
+        }
+        
+        .progress-bar::before {
+            content: '';
+            position: absolute;
+            right: -10px;
+            top: -6px;
+            width: 20px;
+            height: 20px;
+            background: #c41e3a;
+            border-radius: 50%;
+            border: 3px solid white;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+        }
+        
+        /* 缓冲进度条 */
+        .buffer-bar {
+            height: 100%;
+            background: rgba(255,255,255,0.4);
+            border-radius: 4px;
+            width: 0%;
+            position: absolute;
+            top: 0;
+            left: 0;
+            z-index: -1;
+        }
+        
+        /* 时间显示 */
+        .time-display {
+            color: white;
+            font-size: 14px;
+            min-width: 120px;
+            text-align: center;
+            font-family: monospace;
+            background: rgba(0,0,0,0.5);
+            padding: 5px 10px;
+            border-radius: 5px;
+        }
+        
+        /* 音量控制 */
+        .volume-container {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .volume-btn {
+            background: none;
+            border: none;
+            color: white;
+            cursor: pointer;
+            font-size: 20px;
+            transition: all 0.3s ease;
+            width: 35px;
+            height: 35px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+        }
+        
+        .volume-btn:hover {
+            background: rgba(255,255,255,0.2);
+            transform: scale(1.1);
+        }
+        
+        .volume-slider {
+            width: 100px;
+            height: 6px;
+            background: rgba(255,255,255,0.3);
+            border-radius: 3px;
+            cursor: pointer;
+            position: relative;
+        }
+        
+        .volume-bar {
+            height: 100%;
+            background: #c41e3a;
+            border-radius: 3px;
+            width: 70%;
+            transition: width 0.1s ease;
+        }
+        
+        /* 全屏按钮 */
+        .fullscreen-btn {
+            background: none;
+            border: none;
+            color: white;
+            cursor: pointer;
+            font-size: 20px;
+            transition: all 0.3s ease;
+            width: 35px;
+            height: 35px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+        }
+        
+        .fullscreen-btn:hover {
+            background: rgba(255,255,255,0.2);
+            transform: scale(1.1);
+        }
+        
+        /* 加载指示器 */
+        .loading-spinner {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 60px;
+            height: 60px;
+            border: 4px solid rgba(255,255,255,0.3);
+            border-top: 4px solid #c41e3a;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            z-index: 10;
+            display: none;
+        }
+        
+        @keyframes spin {
+            0% { transform: translate(-50%, -50%) rotate(0deg); }
+            100% { transform: translate(-50%, -50%) rotate(360deg); }
+        }
+        
+        /* 键盘快捷键提示 */
+        .keyboard-hints {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: rgba(0,0,0,0.9);
+            color: white;
+            padding: 20px;
+            border-radius: 10px;
+            font-size: 13px;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            pointer-events: none;
+            z-index: 100;
+            max-width: 250px;
+            border: 1px solid rgba(255,255,255,0.2);
+        }
+        
+        .keyboard-hints.show {
+            opacity: 1;
+        }
+        
+        .keyboard-hints h4 {
+            margin-bottom: 15px;
+            color: #c41e3a;
+            font-size: 16px;
+        }
+        
+        .keyboard-hints ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+        
+        .keyboard-hints li {
+            margin: 8px 0;
+            display: flex;
+            justify-content: space-between;
+            gap: 15px;
+            align-items: center;
+        }
+        
+        .keyboard-hints kbd {
+            background: rgba(255,255,255,0.2);
+            padding: 3px 8px;
+            border-radius: 4px;
+            font-family: monospace;
+            border: 1px solid rgba(255,255,255,0.3);
+            font-size: 11px;
+            font-weight: bold;
+        }
+        
+        .back-link {
+            position: fixed;
+    top: 90px;
+    left: 20px;
+    background: #c41e3a;
+    color: white;
+    padding: 8px 15px;
+    text-decoration: none;
+    border-radius: 5px;
+    font-size: 14px;
+    z-index: 999;
+    transition: all 0.3s ease;
+        }
+        
+        .back-link:hover {
+            color: #8b0000;
+            transform: translateX(-5px);
+        }
+        
+        .back-link::before {
+            content: "← ";
+        }
+        
+        @media (max-width: 768px) {
+            .hero-detail-header {
+                flex-direction: column;
+                text-align: center;
+            }
+            
+            .hero-detail-image {
+                width: 200px;
+                height: 200px;
+            }
+            
+            .video-controls {
+                padding: 15px;
+                gap: 10px;
+            }
+            
+            .time-display {
+                min-width: 100px;
+                font-size: 12px;
+            }
+            
+            .volume-slider {
+                width: 80px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- 导航栏 -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <h1 class="nav-title">抗战八十周年纪念</h1>
+            <ul class="nav-menu">
+                <li><a href="index.html#home" class="nav-link">首页</a></li>
+                <li><a href="index.html#history" class="nav-link">历史事件</a></li>
+                <li><a href="index.html#heroes" class="nav-link">英雄人物</a></li>
+                <li><a href="index.html#spirit" class="nav-link">抗战精神</a></li>
+            </ul>
+        </div>
+    </nav>
+<a href="index.html#heroes" class="back-link">返回</a>
+
+
+    <div class="hero-detail-container">
+        <div class="hero-detail-header">
+            <img src="image/杨靖宇.png" alt="杨靖宇" class="hero-detail-image" id="hero-image">
+            <div class="hero-detail-title">
+                <h1 id="hero-name">杨靖宇</h1>
+                <div class="subtitle" id="hero-subtitle">抗日民族英雄、东北抗日联军主要创建者和领导人之一</div>
+                <div class="life-span" id="hero-life-span">1905年2月13日—1940年2月23日</div>
+            </div>
+        </div>
+        
+        <div class="hero-detail-content" id="hero-content">
+            <!-- 内容将通过JavaScript动态加载 -->
+        </div>
+        
+        <!-- 视频部分将通过JavaScript动态添加 -->
+        
+        
+    </div>
+
+    <!-- 页脚 -->
+    <footer class="footer">
+        <div class="container">
+            <p>&copy; 2025 抗战八十周年纪念网站 | 铭记历史，珍爱和平</p>
+        </div>
+    </footer>
+
+    <script>
+        // 视频控制相关变量
+        let video = null;
+        let overlay = null;
+        let controls = null;
+        let progressBar = null;
+        let bufferBar = null;
+        let timeDisplay = null;
+        let volumeBar = null;
+        let volumeSlider = null;
+        let playIcon = null;
+        let volumeIcon = null;
+        let fullscreenIcon = null;
+        let loadingSpinner = null;
+        let keyboardHints = null;
+        let progressContainer = null;
+
+        // 英雄详细数据
+        const heroData = {
+            yangjingyu: {
+                name: "杨靖宇",
+                subtitle: "抗日民族英雄、东北抗日联军主要创建者和领导人之一",
+                lifeSpan: "1905年2月13日—1940年2月23日",
+                image: "image/杨靖宇.png",
+                video: "video/杨靖宇.mp4",
+                videoTitle: "杨靖宇将军英雄事迹",
+                videoDesc: "东北抗日联军总司令杨靖宇的英勇抗战历程",
+                content: `
+                    <p>杨靖宇（1905年2月13日—1940年2月23日），男，出生于河南省确山县，原名马尚德，字骥生，号润生，汉族，中国共产党优秀党员，无产阶级革命家、军事家、著名抗日民族英雄，鄂豫皖苏区及其红军创始人之一，东北抗日联军主要创建者和领导人之一。</p>
+                    
+                    <div class="hero-timeline">
+                        <div class="timeline-item">
+                            <div class="timeline-year">1923年</div>
+                            <div>在河南省立第一甲种工业学校入读期间开始参加革命活动。</div>
+                        </div>
+                        <div class="timeline-item">
+                            <div class="timeline-year">1926年</div>
+                            <div>在确山从事农民运动。</div>
+                        </div>
+                        <div class="timeline-item">
+                            <div class="timeline-year">1927年</div>
+                            <div>4月，领导确山农民暴动；11月，领导刘店秋收起义。</div>
+                        </div>
+                        <div class="timeline-item">
+                            <div class="timeline-year">1929年</div>
+                            <div>被委派赴东北工作。</div>
+                        </div>
+                        <div class="timeline-item">
+                            <div class="timeline-year">1932年</div>
+                            <div>创建以磐石红石砬子为中心的游击根据地。</div>
+                        </div>
+                        <div class="timeline-item">
+                            <div class="timeline-year">1933年</div>
+                            <div>以南满游击队和海龙游击队为基础，成立东北人民革命军第一军独立师。</div>
+                        </div>
+                        <div class="timeline-item">
+                            <div class="timeline-year">1934年</div>
+                            <div>2月，联合17支抗日武装成立东北抗日联合军总指挥部。</div>
+                        </div>
+                        <div class="timeline-item">
+                            <div class="timeline-year">1937年</div>
+                            <div>卢沟桥事变后，杨靖宇号召全体东北同胞，打倒日本帝国主义，率部长期转战东南满大地，配合了全国的抗日战争。</div>
+                        </div>
+                        <div class="timeline-item">
+                            <div class="timeline-year">1939年</div>
+                            <div>在东南满地区秋冬季反"讨伐"作战中，杨靖宇指挥部队化整为零、分散游击。</div>
+                        </div>
+                        <div class="timeline-item">
+                            <div class="timeline-year">1940年</div>
+                            <div>2月23日，在吉林省濛江县壮烈殉国，年仅35岁。</div>
+                        </div>
+                    </div>
+                    
+                    <div class="hero-significance">
+                        <p>杨靖宇是伟大的抗日民族英雄、优秀的共产主义战士、杰出的人民军队将领、中国人民的优秀儿子。在中国革命史、中国共产党党史、中国人民解放军军史、中国抗日战争史上占有重要地位。他的名字从抗日战争时期到现在乃至将来始终是一面光辉的旗帜。</p>
+                        <p>2009年，入选"100位为新中国成立作出突出贡献的英雄模范人物"。2014年9月，入选第一批著名抗日英烈名录。</p>
+                    </div>
+                `
+            },
+            zuquan: {
+                name: "左权",
+                subtitle: "中国无产阶级革命家、军事家、八路军高级将领",
+                lifeSpan: "1905年3月15日-1942年5月25日",
+                image: "image/左权.png",
+                video: "video/左权.mp4",
+                videoTitle: "左权将军英雄事迹",
+                videoDesc: "八路军副总参谋长左权的英勇抗战历程",
+                content: `
+                    <p>左权（1905年3月15日-1942年5月25日），字孳麟，号叔仁，原名左纪权，湖南醴陵人，黄埔军校一期生。1925年加入中国共产党，是中国工农红军和八路军高级将领，无产阶级革命家、军事家。</p>
+                    
+                    <div class="hero-timeline">
+                        <div class="timeline-item">
+                            <div class="timeline-year">1925年</div>
+                            <div>12月赴苏联学习。</div>
+                        </div>
+                        <div class="timeline-item">
+                            <div class="timeline-year">1934年</div>
+                            <div>参加长征，参与指挥强渡大渡河、攻打腊子口等战斗。</div>
+                        </div>
+                        <div class="timeline-item">
+                            <div class="timeline-year">1936年</div>
+                            <div>担任红一军团代理军团长，率部西征并参与指挥山城堡战役。</div>
+                        </div>
+                        <div class="timeline-item">
+                            <div class="timeline-year">1937年</div>
+                            <div>抗日战争爆发后，协助指挥八路军开赴华北抗日前线，粉碎日伪军"扫荡"，发展壮大人民武装力量。</div>
+                        </div>
+                        <div class="timeline-item">
+                            <div class="timeline-year">1940年</div>
+                            <div>取得百团大战等许多战役、战斗的胜利。</div>
+                        </div>
+                        <div class="timeline-item">
+                            <div class="timeline-year">1942年</div>
+                            <div>5月，日军对太行抗日根据地发动大"扫荡"，左权指挥部队掩护中共中央北方局和八路军总部等机关突围转移，不幸牺牲，年仅37岁。</div>
+                        </div>
+                    </div>
+                    
+                    <div class="hero-significance">
+                        <p>牺牲后，延安和太行山根据地为其举行追悼会，并改辽县为左权县。左权一生军事著作40多篇，对学习运用毛泽东军事思想，对国家的独立和民族的解放作出了重要贡献。</p>
+                        <p>2009年，左权被中央宣传部、中央组织部等11个部门评为"100位为新中国成立作出突出贡献的英雄模范人物"。</p>
+                    </div>
+                `
+            },
+            zhaoyiman: {
+                name: "赵一曼",
+                subtitle: "中华民族抗日英雄、革命烈士",
+                lifeSpan: "1905年10月25日—1936年8月2日",
+                image: "image/赵一曼.png",
+                video: "video/赵一曼.mp4",
+                videoTitle: "赵一曼烈士英雄事迹",
+                videoDesc: "抗日女英雄赵一曼的英勇抗战历程",
+                content: `
+                    <p>赵一曼（1905年10月25日—1936年8月2日），原名李坤泰，又名李淑宁、李一超，在东北参加抗日斗争时化名赵一曼，四川宜宾人，抗日英雄。</p>
+                    
+                    <div class="hero-timeline">
+                        <div class="timeline-item">
+                            <div class="timeline-year">1923年</div>
+                            <div>加入中国社会主义青年团。</div>
+                        </div>
+                        <div class="timeline-item">
+                            <div class="timeline-year">1926年</div>
+                            <div>夏，加入中国共产党；11月，入武汉中央军事政治学校学习。</div>
+                        </div>
+                        <div class="timeline-item">
+                            <div class="timeline-year">1927年</div>
+                            <div>9月至1928年11月，在苏联莫斯科中山大学留学。</div>
+                        </div>
+                        <div class="timeline-item">
+                            <div class="timeline-year">1931年</div>
+                            <div>九·一八事变后，被派往东北地区发动抗日斗争。</div>
+                        </div>
+                        <div class="timeline-item">
+                            <div class="timeline-year">1935年</div>
+                            <div>9月，任东北人民革命军第三军第一师第二团政治部主任。</div>
+                        </div>
+                        <div class="timeline-item">
+                            <div class="timeline-year">1935年11月</div>
+                            <div>为掩护部队突围，身负重伤，养伤期间被日军发现，战斗中再度负伤，昏迷被俘。</div>
+                        </div>
+                        <div class="timeline-item">
+                            <div class="timeline-year">1936年</div>
+                            <div>6月28日，在看护和看守帮助下逃出医院；8月2日，在珠河被敌杀害。</div>
+                        </div>
+                    </div>
+                    
+                    <div class="hero-significance">
+                        <p>赵一曼出生于四川南部山区，从小就具有强烈的反封建思想，曾经以绝食来抗争反对缠足。少年时期她开始接受进步刊物，更加坚定了反对封建制度、进行社会革命的理想。</p>
+                        <p>回国后，在宜昌、南昌和上海等地秘密开展党的工作。先后任满洲总工会秘书、组织部长，中共滨江省珠河县中心县委特派员、铁北区委书记，领导工人进行罢工运动，组织青年农民反日游击队与敌人进行斗争。</p>
+                    </div>
+                `
+            },
+            lin: {
+                name: "李林",
+                subtitle: "抗日战争革命烈士",
+                lifeSpan: "1915/1916-1940",
+                image: "image/李林.png",
+                video: "video/李林.mp4",
+                videoTitle: "李林烈士英雄事迹",
+                videoDesc: "抗日女英雄李林的英勇抗战历程",
+                content: `
+                    <p>李林（1915/1916-1940），福建省龙溪县（今漳州市龙海区，一说为今漳州市芗城区）人，中共党员。</p>
+                    
+                    <div class="hero-timeline">
+                        <div class="timeline-item">
+                            <div class="timeline-year">1929年</div>
+                            <div>回国后，积极参加抗日救亡运动。</div>
+                        </div>
+                        <div class="timeline-item">
+                            <div class="timeline-year">1936年</div>
+                            <div>考入北平民国大学；同年加入中国共产党；随即赴太原参加山西牺牲救国同盟会举办的国民师范学校军政训练班，任特委宣传委员兼女子第11连党支部书记。</div>
+                        </div>
+                        <div class="timeline-item">
+                            <div class="timeline-year">1937年</div>
+                            <div>抗日战争爆发后，李林坚决要求到前方杀敌，被派往大同，任牺盟会大同中心区委宣传部部长，后随晋绥边区工作委员会到雁北抗日前线，宣传和组织工人、农民、学生参加抗日武装。</div>
+                        </div>
+                        <div class="timeline-item">
+                            <div class="timeline-year">1937年11月</div>
+                            <div>任雁北抗日游击队第8支队支队长兼政治主任。</div>
+                        </div>
+                        <div class="timeline-item">
+                            <div class="timeline-year">1938年</div>
+                            <div>春，改任整编后的独立支队骑兵营教导员，率部驰骋雁北、绥南与日伪军作战，屡建战功；7月，牺盟会晋绥边工委成立，调任边委会宣传委员兼管边区地方武装；后当选为晋绥边区第11行政专员公署委员。</div>
+                        </div>
+                        <div class="timeline-item">
+                            <div class="timeline-year">1940年</div>
+                            <div>4月，日伪军集中1.2万兵力，对晋绥边区进行"扫荡"；为掩护机关和群众突围，她不顾怀有3个月身孕，率骑兵连勇猛冲杀，将日伪军引开，自己却被围困；26日，在身负重伤后，仍英勇抗击，毙伤日伪军6人；被日伪军包围后，她宁死不屈，将最后一发子弹射向自己，壮烈牺牲，时年24岁。</div>
+                        </div>
+                    </div>
+                    
+                    <div class="hero-significance">
+                        <p>李林幼年侨居印度尼西亚，回国后积极投身抗日救亡运动。她是一位杰出的女性抗日英雄，在晋绥边区抗日斗争中作出了重要贡献。</p>
+                        <p>1940年4月，在掩护机关和群众突围时，李林壮烈牺牲，年仅24岁，怀有3个月身孕。她的英勇事迹永远铭记在人民心中。</p>
+                    </div>
+                `
+            },
+            mabenzhai: {
+                name: "马本斋",
+                subtitle: "抗日民族英雄、烈士",
+                lifeSpan: "1901年—1944年2月7日",
+                image: "image/马本斋.png",
+                video: "video/马本斋.mp4",
+                videoTitle: "马本斋司令英雄事迹",
+                videoDesc: "回民支队司令员马本斋的英勇抗战历程",
+                content: `
+                    <p>马本斋（1901年—1944年2月7日），原名马守清，回族，中国共产党党员，河北沧州献县人。抗日战争时期八路军冀中军区回民支队的创建人，抗日民族英雄。</p>
+                    
+                    <div class="hero-timeline">
+                        <div class="timeline-item">
+                            <div class="timeline-year">1931年</div>
+                            <div>九·一八事变后，因不满蒋介石的不抵抗政策，毅然弃官返乡。</div>
+                        </div>
+                        <div class="timeline-item">
+                            <div class="timeline-year">1937年</div>
+                            <div>全国抗战爆发后，马本斋在家乡组织回民义勇队，奋起抗日。</div>
+                        </div>
+                        <div class="timeline-item">
+                            <div class="timeline-year">1938年</div>
+                            <div>率队参加八路军，所部改编为冀中军区回民教导总队，任总队长；10月，马本斋加入中国共产党。</div>
+                        </div>
+                        <div class="timeline-item">
+                            <div class="timeline-year">1939年</div>
+                            <div>教导总队改称冀中军区回民支队，任司令员。</div>
+                        </div>
+                        <div class="timeline-item">
+                            <div class="timeline-year">1937-1944年</div>
+                            <div>马本斋率部经历大小战斗870余次，歼灭日伪军3.6万余人。他率领回民支队驰骋在冀中平原，渤海之滨，冀鲁豫敌后战场，英勇善战，威名远扬。</div>
+                        </div>
+                        <div class="timeline-item">
+                            <div class="timeline-year">1944年</div>
+                            <div>2月7日，在山东莘县病逝，年仅42岁。</div>
+                        </div>
+                    </div>
+                    
+                    <div class="hero-significance">
+                        <p>马本斋早年投身奉军当兵，逐级升至团长。他带领部队经历大小战斗870余次，歼灭日伪军3.67万名，建起"敌后抗日堡垒"，沉重打击了日寇的嚣张气焰，毛泽东同志称其为"百战百胜的回民支队"。</p>
+                        <p>为纪念抗日英雄马本斋，河北献县本斋乡本斋村建成纪念馆，并且面向公众开放。在马本斋纪念馆，北院的马本斋纪念馆主馆与南院的马本斋母子烈士陵园遥相呼应。</p>
+                        <p>2009年9月，马本斋被中央宣传部、中央组织部等11个部门评选为"100位为新中国成立作出突出贡献的英雄模范人物"。</p>
+                    </div>
+                `
+            },
+            tonglinge: {
+                name: "佟麟阁",
+                subtitle: "抗日英烈、原国民革命军第二十九军副军长",
+                lifeSpan: "1892年10月29日—1937年7月28日",
+                image: "image/佟麟阁.png",
+                video: "video/佟麟阁.mp4",
+                videoTitle: "佟麟阁将军英雄事迹",
+                videoDesc: "抗日英烈佟麟阁的英勇抗战历程",
+                content: `
+                    <p>佟麟阁（1892年10月29日—1937年7月28日），满族(此处有争议，一说为汉族)，本名佟凌阁，字捷三，出生于河北省高阳县边家务村，抗日英烈，原国民革命军第二十九军副军长，追晋陆军上将。</p>
+                    
+                    <div class="hero-timeline">
+                        <div class="timeline-item">
+                            <div class="timeline-year">1908年</div>
+                            <div>16岁时，到高阳县县公署做缮写。</div>
+                        </div>
+                        <div class="timeline-item">
+                            <div class="timeline-year">1912年</div>
+                            <div>投笔从戎，追随冯玉祥南征北战，剿匪平藩，屡立战功，先后任连长、营长、团长、师长等职。</div>
+                        </div>
+                        <div class="timeline-item">
+                            <div class="timeline-year">1930年</div>
+                            <div>中原大战冯玉祥讨蒋失败后，佟麟阁解甲归田，总结以往斗争的经验教训，寻求救国之路。</div>
+                        </div>
+                        <div class="timeline-item">
+                            <div class="timeline-year">1932年</div>
+                            <div>应第二十九军军长宋哲元之邀出山参加抗日斗争。</div>
+                        </div>
+                        <div class="timeline-item">
+                            <div class="timeline-year">1933年</div>
+                            <div>任张家口警备司令，支持二十九军在喜峰口抗击日军；同年5月，任察哈尔民众抗日同盟军第一军军长兼代察省主席，领导对日作战，保卫察省，收复失地。</div>
+                        </div>
+                        <div class="timeline-item">
+                            <div class="timeline-year">1937年</div>
+                            <div>"七七事变"爆发时，出任第二十九军代军长，率部坚守北平南苑，在与日军鏖战时，于1937年7月28日14:30殉国。</div>
+                        </div>
+                    </div>
+                    
+                    <div class="hero-significance">
+                        <p>佟麟阁自幼习读经史，立志救国。同盟军被迫撤销后再次隐退，随着抗日形势发展，再次出山任第二十九军中将副军长兼军事训练团团长。</p>
+                        <p>1937年"七七事变"爆发时，佟麟阁率部坚守北平南苑，在与日军鏖战时壮烈殉国，是抗日战争中牺牲的第一位国民党高级将领。</p>
+                    </div>
+                `
+            }
+        };
+
+// 找到将要插入内容的容器
+    const contentContainer = document.getElementById('event-content');
+
+
+       // 从URL获取英雄ID并显示相应内容
+document.addEventListener('DOMContentLoaded', function() {
+    const params = new URLSearchParams(window.location.search);
+    const heroId = params.get('id');
+    
+    // 获取英雄数据，默认为杨靖宇
+    const hero = heroData[heroId] || heroData.yangjingyu;
+    
+    // 更新页面内容
+    document.getElementById('hero-name').textContent = hero.name;
+    document.getElementById('hero-subtitle').textContent = hero.subtitle;
+    document.getElementById('hero-life-span').textContent = hero.lifeSpan;
+    document.getElementById('hero-image').src = hero.image;
+    document.getElementById('hero-content').innerHTML = hero.content;
+    
+    // 添加视频部分
+    addVideoSection(hero);
+});
+
+           
+
+        // 添加视频部分
+function addVideoSection(hero) {
+    const videoSection = document.createElement('div');
+    videoSection.className = 'hero-video-section';
+    videoSection.innerHTML = `
+        <h2 class="hero-video-title">${hero.name}英雄事迹影像</h2>
+        <div class="video-container">
+            <div class="video-wrapper">
+                <video id="hero-video" 
+               
+                       preload="metadata">
+                    <source src="${hero.video}" type="video/mp4">
+                    您的浏览器不支持视频播放
+                </video>
+                
+               
+                
+                <!-- 视频覆盖层 -->
+                <div class="video-overlay" id="video-overlay">
+                    <div class="play-button" onclick="togglePlay()">
+                        <svg width="80" height="80" viewBox="0 0 80 80">
+                            <circle cx="40" cy="40" r="38" fill="rgba(196, 30, 58, 0.9)"/>
+                            <path d="M30 25 L30 55 L55 40 Z" fill="white"/>
+                        </svg>
+                    </div>
+                    <div class="video-info">
+                        <h3>${hero.videoTitle}</h3>
+                        <p>${hero.videoDesc}</p>
+                    </div>
+                </div>
+                
+                <!-- 视频控制栏 -->
+                <div class="video-controls" id="video-controls">
+                    <button class="play-pause-btn" id="play-pause-btn" onclick="togglePlay()">
+                        <span id="play-icon">▶</span>
+                    </button>
+                    
+                    <div class="progress-container" id="progress-container">
+                        <div class="buffer-bar" id="buffer-bar"></div>
+                        <div class="progress-bar" id="progress-bar"></div>
+                    </div>
+                    
+                    <div class="time-display" id="time-display">
+                        00:00 / 00:00
+                    </div>
+                    
+                    <div class="volume-container">
+                        <button class="volume-btn" id="volume-btn" onclick="toggleMute()">
+                            <span id="volume-icon">🔊</span>
+                        </button>
+                        <div class="volume-slider" id="volume-slider">
+                            <div class="volume-bar" id="volume-bar"></div>
+                        </div>
+                    </div>
+                    
+                    <button class="fullscreen-btn" onclick="toggleFullscreen()">
+                        <span id="fullscreen-icon">⛶</span>
+                    </button>
+                </div>
+                
+                <!-- 键盘快捷键提示 -->
+                <div class="keyboard-hints" id="keyboard-hints">
+                    <h4>键盘快捷键</h4>
+                    <ul>
+                        <li><span>播放/暂停</span> <kbd>空格</kbd></li>
+                        <li><span>快进10秒</span> <kbd>→</kbd></li>
+                        <li><span>后退10秒</span> <kbd>←</kbd></li>
+                        <li><span>音量增加</span> <kbd>↑</kbd></li>
+                        <li><span>音量减少</span> <kbd>↓</kbd></li>
+                        <li><span>静音</span> <kbd>M</kbd></li>
+                        <li><span>全屏</span> <kbd>F</kbd></li>
+                        <li><span>显示帮助</span> <kbd>H</kbd></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    `;
+    
+    // 将视频部分添加到容器末尾
+    const container = document.querySelector('.hero-detail-container');
+    container.appendChild(videoSection);
+    
+    // 延迟初始化视频控制器
+    setTimeout(() => {
+        initializeVideoControls();
+    }, 100);
+}
+
+
+        // 初始化视频控制器
+        function initializeVideoControls() {
+
+            // 获取视频相关元素
+            video = document.getElementById('hero-video');
+            overlay = document.getElementById('video-overlay');
+            controls = document.getElementById('video-controls');
+            progressBar = document.getElementById('progress-bar');
+            bufferBar = document.getElementById('buffer-bar');
+            timeDisplay = document.getElementById('time-display');
+            volumeBar = document.getElementById('volume-bar');
+            volumeSlider = document.getElementById('volume-slider');
+            playIcon = document.getElementById('play-icon');
+            volumeIcon = document.getElementById('volume-icon');
+            fullscreenIcon = document.getElementById('fullscreen-icon');
+            loadingSpinner = document.getElementById('loading-spinner');
+            keyboardHints = document.getElementById('keyboard-hints');
+            progressContainer = document.getElementById('progress-container');
+            
+            if (!video) {
+                console.error('视频元素未找到');
+                return;
+            }
+            
+            // 绑定视频事件
+            bindVideoEvents();
+            
+            // 绑定控制栏事件
+            bindControlEvents();
+            
+            // 绑定键盘事件
+            bindKeyboardEvents();
+            
+            // 初始化音量
+            video.volume = 0.7;
+            updateVolumeBar();
+        }
+
+        // 绑定视频事件
+        function bindVideoEvents() {
+            // 视频加载开始
+            video.addEventListener('loadstart', () => {
+                showLoading(true);
+            });
+            
+            // 视频可以播放
+            video.addEventListener('canplay', () => {
+                showLoading(false);
+            });
+            
+            // 视频缓冲
+            video.addEventListener('progress', updateBufferBar);
+            
+            // 视频时间更新
+            video.addEventListener('timeupdate', updateProgress);
+            
+            // 视频加载元数据
+            video.addEventListener('loadedmetadata', () => {
+                updateTimeDisplay();
+            });
+            
+
+            // 视频播放事件
+    video.addEventListener('play', () => {
+        overlay.classList.add('hidden');
+        if (playIcon) {
+            playIcon.textContent = '❚❚';
+        }
+    });
+    
+    // 视频暂停事件
+    video.addEventListener('pause', () => {
+        if (!video.ended) {
+            overlay.classList.remove('hidden');
+        }
+        if (playIcon) {
+            playIcon.textContent = '▶';
+        }
+    });
+    
+    // 视频结束事件
+    video.addEventListener('ended', () => {
+        overlay.classList.remove('hidden');
+        if (playIcon) {
+            playIcon.textContent = '▶';
+        }
+        // 重置进度条
+        const progressBar = document.getElementById('progress-bar');
+        if (progressBar) {
+            progressBar.style.width = '0%';
+        }
+    });
+    
+    // 覆盖层点击事件
+    overlay.addEventListener('click', (e) => {
+        e.stopPropagation();
+        togglePlay();
+    });
+    
+    // 视频点击事件
+    video.addEventListener('click', (e) => {
+        e.stopPropagation();
+        togglePlay();
+    });
+            
+            
+            // 音量变化
+            video.addEventListener('volumechange', updateVolumeBar);
+        }
+
+        // 绑定控制栏事件
+        function bindControlEvents() {
+
+              // 视频播放事件
+    video.addEventListener('play', () => {
+        overlay.classList.add('hidden');
+        if (playIcon) {
+            playIcon.textContent = '❚❚';
+        }
+    });
+    
+    // 视频暂停事件
+    video.addEventListener('pause', () => {
+        if (!video.ended) {
+            overlay.classList.remove('hidden');
+        }
+        if (playIcon) {
+            playIcon.textContent = '▶';
+        }
+    });
+    
+    // 视频结束事件
+    video.addEventListener('ended', () => {
+        overlay.classList.remove('hidden');
+        if (playIcon) {
+            playIcon.textContent = '▶';
+        }
+        // 重置进度条
+        const progressBar = document.getElementById('progress-bar');
+        if (progressBar) {
+            progressBar.style.width = '0%';
+        }
+    });
+
+
+
+            // 进度条点击
+            progressContainer.addEventListener('click', (e) => {
+                const rect = progressContainer.getBoundingClientRect();
+                const pos = (e.clientX - rect.left) / rect.width;
+                video.currentTime = pos * video.duration;
+            });
+            
+            // 音量滑块点
+            volumeSlider.addEventListener('click', (e) => {
+                const rect = volumeSlider.getBoundingClientRect();
+                const pos = (e.clientX - rect.left) / rect.width;
+                video.volume = pos;
+            });
+            
+           
+        }
+
+        // 绑定键盘事件
+        function bindKeyboardEvents() {
+            document.addEventListener('keydown', (e) => {
+                // 只在视频区域或聚焦时响应
+                if (!video || !document.activeElement.closest('.video-container')) {
+                    return;
+                }
+                
+                switch(e.key.toLowerCase()) {
+                    case ' ': // 空格键
+                        e.preventDefault();
+                        togglePlay();
+                        break;
+                    case 'arrowleft': // 左箭头
+                        e.preventDefault();
+                        video.currentTime = Math.max(0, video.currentTime - 10);
+                        break;
+                    case 'arrowright': // 右箭头
+                        e.preventDefault();
+                        video.currentTime = Math.min(video.duration, video.currentTime + 10);
+                        break;
+                    case 'arrowup': // 上箭头
+                        e.preventDefault();
+                        video.volume = Math.min(1, video.volume + 0.1);
+                        break;
+                    case 'arrowdown': // 下箭头
+                        e.preventDefault();
+                        video.volume = Math.max(0, video.volume - 0.1);
+                        break;
+                    case 'm': // M键静音
+                        e.preventDefault();
+                        toggleMute();
+                        break;
+                    case 'f': // F键全屏
+                        e.preventDefault();
+                        toggleFullscreen();
+                        break;
+                    case 'h': // H键显示帮助
+                        e.preventDefault();
+                        toggleKeyboardHints();
+                        break;
+                }
+            });
+        }
+
+       
+       // 播放/暂停切换函数
+function togglePlay() {
+    const video = document.getElementById('hero-video');
+    const overlay = document.getElementById('video-overlay');
+    const playIcon = document.getElementById('play-icon');
+    
+    if (!video) {
+        console.error('视频元素未找到');
+        return;
+    }
+    
+    if (video.paused) {
+        video.play().then(() => {
+            // 播放成功，隐藏覆盖层
+            overlay.classList.add('hidden');
+            // 更新播放按钮图标
+            if (playIcon) {
+                playIcon.textContent = '❚❚';
+            }
+        }).catch(error => {
+            console.error('播放失败:', error);
+            showErrorMessage('视频播放失败');
+        });
+    } else {
+        video.pause();
+        // 暂停时显示覆盖层（如果视频未结束）
+        if (!video.ended) {
+            overlay.classList.remove('hidden');
+        }
+        // 更新播放按钮图标
+        if (playIcon) {
+            playIcon.textContent = '▶';
+        }
+    }
+}
+
+
+        // 静音切换
+        function toggleMute() {
+            video.muted = !video.muted;
+        }
+
+        // 全屏切换
+        function toggleFullscreen() {
+            const videoWrapper = document.querySelector('.video-wrapper');
+            
+            if (!document.fullscreenElement) {
+                videoWrapper.requestFullscreen().catch(err => {
+                    console.error('全屏失败:', err);
+                });
+                fullscreenIcon.textContent = '⛶';
+            } else {
+                document.exitFullscreen();
+                fullscreenIcon.textContent = '⛶';
+            }
+        }
+
+        // 显示/隐藏键盘提示
+        function toggleKeyboardHints() {
+            keyboardHints.classList.toggle('show');
+            
+            // 3秒后自动隐藏
+            if (keyboardHints.classList.contains('show')) {
+                setTimeout(() => {
+                    keyboardHints.classList.remove('show');
+                }, 3000);
+            }
+        }
+
+        // 更新进度条
+        function updateProgress() {
+            if (video.duration) {
+                const progress = (video.currentTime / video.duration) * 100;
+                progressBar.style.width = progress + '%';
+                updateTimeDisplay();
+            }
+        }
+
+        // 更新缓冲条
+        function updateBufferBar() {
+            if (video.buffered.length > 0) {
+                const bufferedEnd = video.buffered.end(video.buffered.length - 1);
+                const duration = video.duration;
+                if (duration) {
+                    bufferBar.style.width = ((bufferedEnd / duration) * 100) + '%';
+                }
+            }
+        }
+
+        // 更新时间显示
+        function updateTimeDisplay() {
+            const current = formatTime(video.currentTime);
+            const duration = formatTime(video.duration);
+            timeDisplay.textContent = `${current} / ${duration}`;
+        }
+
+        // 更新音量条
+        function updateVolumeBar() {
+            const volume = video.muted ? 0 : video.volume;
+            volumeBar.style.width = (volume * 100) + '%';
+            
+            // 更新音量图标
+            if (video.muted || volume === 0) {
+                volumeIcon.textContent = '🔇';
+            } else if (volume < 0.5) {
+                volumeIcon.textContent = '🔉';
+            } else {
+                volumeIcon.textContent = '🔊';
+            }
+        }
+
+        // 格式化时间
+        function formatTime(seconds) {
+            if (isNaN(seconds)) return '00:00';
+            
+            const minutes = Math.floor(seconds / 60);
+            const secs = Math.floor(seconds % 60);
+            return `${minutes.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
+        }
+
+        // 显示/隐藏加载指示器
+        function showLoading(show) {
+            loadingSpinner.style.display = show ? 'block' : 'none';
+        }
+
+        // 显示错误信息
+        function showErrorMessage(message) {
+            const errorDiv = document.createElement('div');
+            errorDiv.style.cssText = `
+                position: absolute;
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%, -50%);
+                background: rgba(255,0,0,0.9);
+                color: white;
+                padding: 20px;
+                border-radius: 8px;
+                z-index: 1000;
+                text-align: center;
+            `;
+            errorDiv.textContent = message;
+            
+            const videoWrapper = document.querySelector('.video-wrapper');
+            videoWrapper.appendChild(errorDiv);
+            
+            setTimeout(() => {
+                if (errorDiv.parentNode) {
+                    errorDiv.parentNode.removeChild(errorDiv);
+                }
+            }, 3000);
+        }
+
+        // 导航栏滚动效果
+        window.addEventListener('scroll', function() {
+            const navbar = document.querySelector('.navbar');
+            if (window.scrollY > 100) {
+                navbar.style.background = 'linear-gradient(135deg, #8b0000 0%, #c41e3a 100%)';
+            } else {
+                navbar.style.background = 'linear-gradient(135deg, #c41e3a 0%, #8b0000 100%)';
+            }
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,597 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>烽火岁月铭民族史，铁血忠魂铸英雄碑</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<style>
+/* 进度条容器 */
+.progress-container {
+    flex: 1;
+    height: 8px;
+    background: rgba(255,255,255,0.3);
+    border-radius: 4px;
+    cursor: pointer;
+    position: relative;
+    margin-right: 15px;
+}
+
+/* 进度条背景 */
+.progress-bar {
+    height: 100%;
+    background: rgba(255,255,255,0.3);
+    border-radius: 4px;
+    position: relative;
+}
+
+/* 进度条填充 */
+.progress-filled {
+    height: 100%;
+    background: #c41e3a;
+    border-radius: 4px;
+    width: 0%;
+    position: relative;
+    transition: width 0.1s linear;
+}
+
+.progress-filled::after {
+    content: '';
+    position: absolute;
+    right: -6px;
+    top: -4px;
+    width: 16px;
+    height: 16px;
+    background: #c41e3a;
+    border-radius: 50%;
+    border: 2px solid white;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+}
+
+/* 音量输入框 */
+.volume-input {
+    width: 100px;
+    height: 6px;
+    background: rgba(255,255,255,0.3);
+    border-radius: 3px;
+    outline: none;
+    -webkit-appearance: none;
+    cursor: pointer;
+}
+
+.volume-input::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    width: 14px;
+    height: 14px;
+    background: #c41e3a;
+    border-radius: 50%;
+    cursor: pointer;
+    border: 2px solid white;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.3);
+}
+
+.volume-input::-moz-range-thumb {
+    width: 14px;
+    height: 14px;
+    background: #c41e3a;
+    border-radius: 50%;
+    cursor: pointer;
+    border: 2px solid white;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.3);
+}
+
+.video-subtitle {
+    text-align: center;
+    font-size: 1.1rem;
+    color: rgba(255, 255, 255, 0.9);
+    background: linear-gradient(135deg, rgba(196, 30, 58, 0.8), rgba(139, 0, 0, 0.8));
+    padding: 15px 30px;
+    border-radius: 30px;
+    margin: 20px auto;
+    max-width: 600px;
+    box-shadow: 0 8px 25px rgba(196, 30, 58, 0.3);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    font-weight: 500;
+    letter-spacing: 0.5px;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+    transition: all 0.3s ease;
+}
+
+.video-subtitle:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 12px 35px rgba(196, 30, 58, 0.4);
+    background: linear-gradient(135deg, rgba(196, 30, 58, 0.9), rgba(139, 0, 0, 0.9));
+}
+
+/* 视频包装器样式 - 高度统一 */
+.video-wrapper {
+    position: relative;
+    width: 100%;
+    height: 0;
+    padding-bottom: 56.25%; /* 16:9 比例 */
+    background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
+    border-radius: 20px;
+    overflow: hidden;
+    box-shadow: 
+        0 20px 60px rgba(0,0,0,0.3),
+        0 10px 25px rgba(0,0,0,0.2),
+        inset 0 1px 0 rgba(255,255,255,0.1);
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    border: 1px solid rgba(255,255,255,0.1);
+}
+
+.video-wrapper:hover {
+    transform: translateY(-8px) scale(1.02);
+    box-shadow: 
+        0 30px 80px rgba(196, 30, 58, 0.25),
+        0 15px 35px rgba(0,0,0,0.3),
+        inset 0 1px 0 rgba(255,255,255,0.2);
+    border-color: rgba(196, 30, 58, 0.3);
+}
+
+.video-wrapper video {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    border-radius: 20px;
+}
+
+/* 响应式设计 - 对齐优化 */
+@media (max-width: 1200px) {
+    .video-playlist {
+        height: calc(100vh - 280px);
+        max-height: 450px;
+        min-height: 350px;
+    }
+}
+
+@media (max-width: 968px) {
+    .video-container {
+        grid-template-columns: 1fr;
+        gap: 25px;
+        align-items: stretch; /* 垂直对齐 */
+    }
+    
+    .video-wrapper {
+        padding-bottom: 56.25%; /* 保持16:9比例 */
+        max-height: none;
+    }
+    
+    .video-playlist {
+        height: auto;
+        max-height: 400px;
+        min-height: 300px;
+        border-radius: 20px;
+        padding: 20px;
+    }
+    
+    .playlist-items {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 18px;
+        padding-right: 0;
+    }
+    
+    .playlist-item {
+        flex-direction: column;
+        padding: 18px;
+    }
+    
+    .item-thumbnail {
+        width: 100%;
+        height: 100px;
+    }
+    
+    .item-info {
+        margin-top: 12px;
+    }
+    
+    .playlist-subtitle {
+        margin-left: 0;
+        font-size: 0.8rem;
+        text-align: center;
+    }
+    
+    .playlist-subtitle::before {
+        display: none;
+    }
+    
+    .video-info {
+        max-width: 90%;
+        padding: 20px 25px;
+    }
+    
+    .video-info h3 {
+        font-size: 1.6rem;
+    }
+    
+    .video-info p {
+        font-size: 1rem;
+    }
+}
+
+@media (max-width: 568px) {
+    .playlist-items {
+        grid-template-columns: 1fr;
+    }
+    
+    .item-thumbnail {
+        height: 110px;
+    }
+    
+    .video-playlist {
+        padding: 15px;
+        max-height: 350px;
+        min-height: 250px;
+    }
+    
+    .video-info {
+        max-width: 95%;
+        padding: 15px 20px;
+    }
+    
+    .video-info h3 {
+        font-size: 1.4rem;
+    }
+    
+    .video-info p {
+        font-size: 0.9rem;
+    }
+    
+    .play-button {
+        margin-bottom: 20px;
+    }
+}
+
+
+</style>
+<body>
+    <!-- 导航栏 -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <h1 class="nav-title">抗战八十周年纪念</h1>
+            <ul class="nav-menu">
+                <li><a href="index.html#home" class="nav-link">首页</a></li>
+                <li><a href="index.html#history" class="nav-link">历史事件</a></li>
+                <li><a href="index.html#heroes" class="nav-link">英雄人物</a></li>
+                <li><a href="index.html#spirit" class="nav-link">抗战精神</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- 首页横幅 -->
+    <section id="home" class="hero-section">
+        <div class="hero-content">
+            <h2 class="hero-title">烽火岁月铭民族史</h2>
+            <p class="hero-subtitle">铁血忠魂铸英雄碑</p>
+            <div class="scroll-text">
+                <p class="scrolling-text">铭记历史 · 缅怀先烈 · 珍爱和平 · 开创未来</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- 视频展示模块 -->
+    <section id="video-section" class="section">
+        <div class="container">
+            <div class="video-header">
+                <h2 class="section-title">影像记忆</h2>
+                <p class="video-subtitle">穿越时光的镜头，重温那段波澜壮阔的历史</p>
+            </div>
+            
+            <div class="video-container">
+                <div class="video-wrapper">
+                    <video id="main-video" 
+                           poster="image/抗战胜利.png" 
+                           preload="metadata"
+                           style="width: 100%; height: 100%; object-fit: contain;">
+                        <source src="video/抗战胜利.mp4" type="video/mp4">
+                        您的浏览器不支持视频播放
+                    </video>
+
+
+                    <!-- 视频控制栏 -->
+<div class="video-controls" id="video-controls">
+    <!-- 播放/暂停按钮 -->
+    <button class="control-btn play-pause-btn" id="play-pause-btn" onclick="togglePlayPause()">
+    <!-- 播放图标 -->
+    <svg id="play-icon" width="24" height="24" viewBox="0 0 24 24" fill="white">
+        <path d="M8 5v14l11-7z"/>
+    </svg>
+    <!-- 暂停图标 -->
+    <svg id="pause-icon" width="24" height="24" viewBox="0 0 24 24" fill="white" style="display:none;">
+        <path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/>
+    </svg>
+</button>
+    
+    <!-- 进度条 -->
+<div class="progress-container" id="progress-container">
+    <div class="progress-bar" id="progress-bar">
+        <div class="progress-filled" id="progress-filled"></div>
+    </div>
+    <span class="time-display" id="time-display">0:00 / 0:00</span>
+</div>
+
+<!-- 音量条 -->
+<div class="volume-container">
+    <button class="control-btn volume-btn" id="volume-btn" onclick="toggleMute()">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="white">
+            <path id="volume-high" d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02z"/>
+            <path id="volume-mid" style="display:none" d="M7 9v6h4l5 5V4l-5 5H7z"/>
+            <path id="volume-mute" style="display:none" d="M16.5 12c0-1.77-1.02-3.29-2.5-4.03v2.21l2.45 2.45c.03-.2.05-.41.05-.63zm2.5 0c0 .94-.2 1.82-.54 2.64l1.51 1.51C20.63 14.91 21 13.5 21 12c0-4.28-2.99-7.86-7-8.77v2.06c2.89.86 5 3.54 5 6.71zM4.27 3L3 4.27 7.73 9H3v6h4l5 5v-6.73l4.25 4.25c-.67.52-1.42.93-2.25 1.18v2.06c1.38-.31 2.63-.95 3.69-1.81L19.73 21 21 19.73l-9-9L4.27 3zM12 4L9.91 6.09 12 8.18V4z"/>
+        </svg>
+    </button>
+    <input type="range" class="volume-input" id="volume-input" min="0" max="100" value="70">
+</div>
+    
+    <!-- 全屏按钮 -->
+    <button class="control-btn fullscreen-btn" onclick="toggleFullscreen()">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="white">
+            <path d="M7 14H5v5h5v-2H7v-3zm-2-4h2V7h3V5H5v5zm12 7h-3v2h5v-5h-2v3zM14 5v2h3v3h2V5h-5z"/>
+        </svg>
+    </button>
+</div>
+
+
+
+
+                    <div class="video-overlay" id="video-overlay">
+                        <div class="play-button" onclick="playVideo()">
+                            <svg width="80" height="80" viewBox="0 0 80 80">
+                                <circle cx="40" cy="40" r="38" fill="rgba(196, 30, 58, 0.9)"/>
+                                <path d="M30 25 L30 55 L55 40 Z" fill="white"/>
+                            </svg>
+                        </div>
+                        <div class="video-info">
+                            <h3>抗战历史影像</h3>
+                            <p>点击播放，重温那段烽火岁月</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- 视频播放列表 -->
+                <div class="video-playlist">
+                    <div class="playlist-header">
+                        <h3>
+                            <span class="playlist-icon">📹</span>
+                            精选影像
+                        </h3>
+                        <p class="playlist-subtitle">珍贵历史资料，铭记民族记忆</p>
+                    </div>
+                    <div class="playlist-items">
+                        <div class="playlist-item active" onclick="selectVideo(0)">
+                            <div class="item-thumbnail">
+                                <img src="image/抗战全面爆发.png" alt="抗战全面爆发">
+                                <div class="play-overlay">
+                                    <div class="play-icon">▶</div>
+                                </div>
+                            </div>
+                            <div class="item-info">
+                                <h4>抗战全面爆发</h4>
+                                <p>1937年卢沟桥事变历史回顾，揭开全民族抗战的序幕</p>
+                            </div>
+                        </div>
+                        <div class="playlist-item" onclick="selectVideo(1)">
+                            <div class="item-thumbnail">
+                                <img src="image/平型关大捷.png" alt="平型关大捷">
+                                <div class="play-overlay">
+                                    <div class="play-icon">▶</div>
+                                </div>
+                            </div>
+                            <div class="item-info">
+                                <h4>平型关大捷</h4>
+                                <p>八路军首战告捷的辉煌时刻，打破日军不可战胜的神话</p>
+                            </div>
+                        </div>
+                        <div class="playlist-item" onclick="selectVideo(2)">
+                            <div class="item-thumbnail">
+                                <img src="image/南京.png" alt="南京保卫战">
+                                <div class="play-overlay">
+                                    <div class="play-icon">▶</div>
+                                </div>
+                            </div>
+                            <div class="item-info">
+                                <h4>南京保卫战</h4>
+                                <p>军民同心守卫首都的悲壮史诗，彰显民族不屈精神</p>
+                            </div>
+                        </div>
+                        <div class="playlist-item" onclick="selectVideo(3)">
+                            <div class="item-thumbnail">
+                                <img src="image/抗战胜利.png" alt="抗战胜利">
+                                <div class="play-overlay">
+                                    <div class="play-icon">▶</div>
+                                </div>
+                            </div>
+                            <div class="item-info">
+                                <h4>抗战胜利</h4>
+                                <p>1945年日本投降历史时刻，中华民族的伟大胜利</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+           
+
+    
+<section id="history" class="section">
+    <div class="container">
+        <h2 class="section-title">重大历史事件</h2>
+        <div class="carousel-container">
+            <div class="carousel" id="history-carousel">
+                <div class="carousel-item active" data-id="qiqi">
+                    <a href="history-detail.html?id=qiqi">
+                        <img src="image/七七事变.png" alt="七七事变">
+                        <div class="carousel-caption">
+                            <h3>七七事变（卢沟桥事变）—— 1937年7月7日</h3>
+                            <p>日本帝国主义全面侵华的开始，也是中国全民族抗战的起点。</p>
+                        </div>
+                    </a>
+                </div>
+                <div class="carousel-item" data-id="songhu">
+                    <a href="history-detail.html?id=songhu">
+                        <img src="image/淞沪会战.png" alt="淞沪会战">
+                        <div class="carousel-caption">
+                            <h3>淞沪会战 —— 1937年8月13日至11月26日</h3>
+                            <p>抗战中规模最大、战斗最惨烈的战略性战役，粉碎了日本"三个月亡华"的妄想。</p>
+                        </div>
+                    </a>
+                </div>
+                <div class="carousel-item" data-id="nanjing">
+                    <a href="history-detail.html?id=nanjing">
+                        <img src="image/南京大屠杀.png" alt="南京大屠杀">
+                        <div class="carousel-caption">
+                            <h3>南京大屠杀 —— 1937年12月</h3>
+                            <p>抗日战争时期最惨绝人寰的事件之一，揭露了日本军国主义的极端残暴。</p>
+                        </div>
+                    </a>
+                </div>
+                <div class="carousel-item" data-id="taierzhuang">
+                    <a href="history-detail.html?id=taierzhuang">
+                        <img src="image/台儿庄大捷.png" alt="台儿庄大捷">
+                        <div class="carousel-caption">
+                            <h3>台儿庄大捷 —— 1938年3月至4月</h3>
+                            <p>抗日战争初期中国军队在正面战场取得的一次重大胜利，极大地鼓舞了全国军民的抗战士气。</p>
+                        </div>
+                    </a>
+                </div>
+                <div class="carousel-item" data-id="baituan">
+                    <a href="history-detail.html?id=baituan">
+                        <img src="image/百团大战.png" alt="百团大战">
+                        <div class="carousel-caption">
+                            <h3>百团大战 —— 1940年8月至12月</h3>
+                            <p>中国共产党领导的八路军在华北敌后发动的一次大规模战略性进攻战役。</p>
+                        </div>
+                    </a>
+                </div>
+            </div>
+            <button class="carousel-btn prev" onclick="changeSlide(-1)">❮</button>
+            <button class="carousel-btn next" onclick="changeSlide(1)">❯</button>
+        </div>
+    </div>
+</section>
+
+    <!-- 英雄人物 -->
+    <section id="heroes" class="section bg-light">
+        <div class="container">
+            <h2 class="section-title">民族英雄</h2>
+            <div class="heroes-grid">
+                <a href="hero-detail.html?id=yangjingyu" class="hero-card-link">
+                    <div class="hero-card">
+                        <div class="hero-image">
+                            <img src="image/杨靖宇.png" alt="杨靖宇">
+                        </div>
+                        <div class="hero-info">
+                            <h3>杨靖宇</h3>
+                            <p>抗日民族英雄、东北抗日联军主要创建者和领导人之一</p>
+                        </div>
+                    </div>
+                </a>
+                <a href="hero-detail.html?id=zuquan" class="hero-card-link">
+                    <div class="hero-card">
+                        <div class="hero-image">
+                            <img src="image/左权.png" alt="左权">
+                        </div>
+                        <div class="hero-info">
+                            <h3>左权</h3>
+                            <p>中国无产阶级革命家、军事家、八路军高级将领</p>
+                        </div>
+                    </div>
+                </a>
+                <a href="hero-detail.html?id=zhaoyiman" class="hero-card-link">
+                    <div class="hero-card">
+                        <div class="hero-image">
+                            <img src="image/赵一曼.png" alt="赵一曼">
+                        </div>
+                        <div class="hero-info">
+                            <h3>赵一曼</h3>
+                            <p>中华民族抗日英雄、革命烈士</p>
+                        </div>
+                    </div>
+                </a>
+                <a href="hero-detail.html?id=lin" class="hero-card-link">
+                    <div class="hero-card">
+                        <div class="hero-image">
+                            <img src="image/李林.png" alt="李林">
+                        </div>
+                        <div class="hero-info">
+                            <h3>李林</h3>
+                            <p>抗日战争革命烈士</p>
+                        </div>
+                    </div>
+                </a>
+                <a href="hero-detail.html?id=mabenzhai" class="hero-card-link">
+                    <div class="hero-card">
+                        <div class="hero-image">
+                            <img src="image/马本斋.png" alt="马本斋">
+                        </div>
+                        <div class="hero-info">
+                            <h3>马本斋</h3>
+                            <p>抗日民族英雄、烈士，八路军冀中军区回民支队创建人</p>
+                        </div>
+                    </div>
+                </a>
+                <a href="hero-detail.html?id=tonglinge" class="hero-card-link">
+                    <div class="hero-card">
+                        <div class="hero-image">
+                            <img src="image/佟麟阁.png" alt="佟麟阁">
+                        </div>
+                        <div class="hero-info">
+                            <h3>佟麟阁</h3>
+                            <p>抗日英烈、原国民革命军第二十九军副军长</p>
+                        </div>
+                    </div>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- 抗战精神 -->
+    <section id="spirit" class="section">
+        <div class="container">
+            <h2 class="section-title">抗战精神</h2>
+            
+            <!-- 抗战背景介绍 -->
+            <div class="spirit-intro">
+                <p>抗日战争，简称抗战，指20世纪中期第二次世界大战中，中国抵抗日本侵略的一场民族性的全面战争。国际上称作第二次中日战争、日本侵华战争。抗战时间从1931年9月18日九·一八事变开始算起，至1945年9月2日结束，共14年抗战。</p>
+            </div>
+            
+            <div class="spirit-content">
+                <div class="spirit-item">
+                    <div class="spirit-icon">🇨🇳</div>
+                    <h3>天下兴亡、匹夫有责的爱国精神</h3>
+                    <p>全民族空前团结，不分党派阶层，将为国家和民族命运而战视为至高无上的责任。</p>
+                </div>
+                <div class="spirit-item">
+                    <div class="spirit-icon">🛡️</div>
+                    <h3>视死如归、宁死不屈的民族气节</h3>
+                    <p>面对强敌，广大军民展现出坚贞不屈的铮铮铁骨，誓死捍卫国家尊严与民族独立。</p>
+                </div>
+                <div class="spirit-item">
+                    <div class="spirit-icon">⚔️</div>
+                    <h3>不畏强暴、血战到底的英雄气概</h3>
+                    <p>在极端艰困的条件下，以顽强的意志与侵略者战斗到底，展现了压倒一切敌人的勇气。</p>
+                </div>
+                <div class="spirit-item">
+                    <div class="spirit-icon">🏆</div>
+                    <h3>百折不挠、坚韧不拔的必胜信念</h3>
+                    <p>坚信正义必胜，以无比的战略定力和坚韧耐力，历经十四年艰苦卓绝终于赢得胜利。</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 页脚 -->
+    <footer class="footer">
+        <div class="container">
+            <p>&copy; 2025 抗战八十周年纪念网站 | 铭记历史，珍爱和平</p>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>
