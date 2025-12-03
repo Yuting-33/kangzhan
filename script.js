@@ -455,3 +455,38 @@ document.addEventListener('DOMContentLoaded', function() {
     loadCandleStates();
 });
 
+// 动态调整播放列表高度
+function adjustPlaylistHeight() {
+    const playlist = document.querySelector('.video-playlist');
+    const items = document.querySelectorAll('.playlist-item');
+    
+    if (window.innerWidth <= 767) {
+        // 计算所需高度
+        let totalHeight = 0;
+        items.forEach(item => {
+            totalHeight += item.offsetHeight + 20; // 包含间距
+        });
+        
+        // 设置最小高度
+        const minHeight = Math.max(totalHeight, 400);
+        playlist.style.minHeight = minHeight + 'px';
+        playlist.style.height = 'auto';
+        playlist.style.maxHeight = 'none';
+    }
+}
+
+// 在窗口大小改变时调整
+window.addEventListener('resize', adjustPlaylistHeight);
+
+// 在视频选择后调整
+function selectVideo(index) {
+    // ... 原有代码 ...
+    
+    // 调整播放列表高度
+    setTimeout(adjustPlaylistHeight, 100);
+}
+
+// 页面加载完成后调整
+document.addEventListener('DOMContentLoaded', function() {
+    setTimeout(adjustPlaylistHeight, 500);
+});
