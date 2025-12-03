@@ -141,6 +141,17 @@
     border-radius: 20px;
 }
 
+/* 嵌入视频样式 */
+.video-wrapper iframe {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    border: none;
+    border-radius: 20px;
+}
+
 /* 响应式设计 - 对齐优化 */
 @media (max-width: 1200px) {
     .video-playlist {
@@ -247,8 +258,6 @@
         margin-bottom: 20px;
     }
 }
-
-
 </style>
 <body>
     <!-- 导航栏 -->
@@ -285,72 +294,7 @@
             
             <div class="video-container">
                 <div class="video-wrapper">
-                    <video id="main-video" 
-                           poster="image/抗战胜利.png" 
-                           preload="metadata"
-                           style="width: 100%; height: 100%; object-fit: contain;">
-                        <source src="video/抗战胜利.mp4" type="video/mp4">
-                        您的浏览器不支持视频播放
-                    </video>
-
-
-                    <!-- 视频控制栏 -->
-<div class="video-controls" id="video-controls">
-    <!-- 播放/暂停按钮 -->
-    <button class="control-btn play-pause-btn" id="play-pause-btn" onclick="togglePlayPause()">
-    <!-- 播放图标 -->
-    <svg id="play-icon" width="24" height="24" viewBox="0 0 24 24" fill="white">
-        <path d="M8 5v14l11-7z"/>
-    </svg>
-    <!-- 暂停图标 -->
-    <svg id="pause-icon" width="24" height="24" viewBox="0 0 24 24" fill="white" style="display:none;">
-        <path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/>
-    </svg>
-</button>
-    
-    <!-- 进度条 -->
-<div class="progress-container" id="progress-container">
-    <div class="progress-bar" id="progress-bar">
-        <div class="progress-filled" id="progress-filled"></div>
-    </div>
-    <span class="time-display" id="time-display">0:00 / 0:00</span>
-</div>
-
-<!-- 音量条 -->
-<div class="volume-container">
-    <button class="control-btn volume-btn" id="volume-btn" onclick="toggleMute()">
-        <svg width="24" height="24" viewBox="0 0 24 24" fill="white">
-            <path id="volume-high" d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02z"/>
-            <path id="volume-mid" style="display:none" d="M7 9v6h4l5 5V4l-5 5H7z"/>
-            <path id="volume-mute" style="display:none" d="M16.5 12c0-1.77-1.02-3.29-2.5-4.03v2.21l2.45 2.45c.03-.2.05-.41.05-.63zm2.5 0c0 .94-.2 1.82-.54 2.64l1.51 1.51C20.63 14.91 21 13.5 21 12c0-4.28-2.99-7.86-7-8.77v2.06c2.89.86 5 3.54 5 6.71zM4.27 3L3 4.27 7.73 9H3v6h4l5 5v-6.73l4.25 4.25c-.67.52-1.42.93-2.25 1.18v2.06c1.38-.31 2.63-.95 3.69-1.81L19.73 21 21 19.73l-9-9L4.27 3zM12 4L9.91 6.09 12 8.18V4z"/>
-        </svg>
-    </button>
-    <input type="range" class="volume-input" id="volume-input" min="0" max="100" value="70">
-</div>
-    
-    <!-- 全屏按钮 -->
-    <button class="control-btn fullscreen-btn" onclick="toggleFullscreen()">
-        <svg width="24" height="24" viewBox="0 0 24 24" fill="white">
-            <path d="M7 14H5v5h5v-2H7v-3zm-2-4h2V7h3V5H5v5zm12 7h-3v2h5v-5h-2v3zM14 5v2h3v3h2V5h-5z"/>
-        </svg>
-    </button>
-</div>
-
-
-
-
-                    <div class="video-overlay" id="video-overlay">
-                        <div class="play-button" onclick="playVideo()">
-                            <svg width="80" height="80" viewBox="0 0 80 80">
-                                <circle cx="40" cy="40" r="38" fill="rgba(196, 30, 58, 0.9)"/>
-                                <path d="M30 25 L30 55 L55 40 Z" fill="white"/>
-                            </svg>
-                        </div>
-                        <div class="video-info">
-                            <h3>抗战历史影像</h3>
-                            <p>点击播放，重温那段烽火岁月</p>
-                        </div>
-                    </div>
+                    <!-- 视频内容将通过JavaScript动态插入 -->
                 </div>
                 
                 <!-- 视频播放列表 -->
@@ -360,63 +304,66 @@
                             <span class="playlist-icon">📹</span>
                             精选影像
                         </h3>
-                        <p class="playlist-subtitle">珍贵历史资料，铭记民族记忆</p>
                     </div>
                     <div class="playlist-items">
-                        <div class="playlist-item active" onclick="selectVideo(0)">
-                            <div class="item-thumbnail">
-                                <img src="image/抗战全面爆发.png" alt="抗战全面爆发">
-                                <div class="play-overlay">
-                                    <div class="play-icon">▶</div>
-                                </div>
-                            </div>
-                            <div class="item-info">
-                                <h4>抗战全面爆发</h4>
-                                <p>1937年卢沟桥事变历史回顾，揭开全民族抗战的序幕</p>
-                            </div>
-                        </div>
-                        <div class="playlist-item" onclick="selectVideo(1)">
-                            <div class="item-thumbnail">
-                                <img src="image/平型关大捷.png" alt="平型关大捷">
-                                <div class="play-overlay">
-                                    <div class="play-icon">▶</div>
-                                </div>
-                            </div>
-                            <div class="item-info">
-                                <h4>平型关大捷</h4>
-                                <p>八路军首战告捷的辉煌时刻，打破日军不可战胜的神话</p>
-                            </div>
-                        </div>
-                        <div class="playlist-item" onclick="selectVideo(2)">
-                            <div class="item-thumbnail">
-                                <img src="image/南京.png" alt="南京保卫战">
-                                <div class="play-overlay">
-                                    <div class="play-icon">▶</div>
-                                </div>
-                            </div>
-                            <div class="item-info">
-                                <h4>南京保卫战</h4>
-                                <p>军民同心守卫首都的悲壮史诗，彰显民族不屈精神</p>
-                            </div>
-                        </div>
-                        <div class="playlist-item" onclick="selectVideo(3)">
-                            <div class="item-thumbnail">
-                                <img src="image/抗战胜利.png" alt="抗战胜利">
-                                <div class="play-overlay">
-                                    <div class="play-icon">▶</div>
-                                </div>
-                            </div>
-                            <div class="item-info">
-                                <h4>抗战胜利</h4>
-                                <p>1945年日本投降历史时刻，中华民族的伟大胜利</p>
-                            </div>
-                        </div>
+    <div class="playlist-item active" onclick="selectVideo(0)">
+        <div class="item-thumbnail">
+            <img src="image/1.png" alt="勿忘国耻 吾辈自强">
+            <div class="play-overlay">
+                <div class="play-icon">▶</div>
+            </div>
+            <div class="duration">05:23</div>
+        </div>
+        <div class="item-info">
+            <h4>勿忘国耻 吾辈自强</h4>
+            <p>热烈庆祝抗战胜利八十周年！此片铭记历史，缅怀先烈</p>
+        </div>
+    </div>
+    <div class="playlist-item" onclick="selectVideo(1)">
+        <div class="item-thumbnail">
+            <img src="image/2.png" alt="央视抗战胜利八十周年">
+            <div class="play-overlay">
+                <div class="play-icon">▶</div>
+            </div>
+            <div class="duration">08:15</div>
+        </div>
+        <div class="item-info">
+            <h4>央视抗战胜利八十周年</h4>
+            <p>央视纪念中国人民抗战胜利八十周年特别视频</p>
+        </div>
+    </div>
+    <div class="playlist-item" onclick="selectVideo(2)">
+        <div class="item-thumbnail">
+            <img src="image/4.png" alt="中国抗战历史超燃混剪">
+            <div class="play-overlay">
+                <div class="play-icon">▶</div>
+            </div>
+            <div class="duration">06:42</div>
+        </div>
+        <div class="item-info">
+            <h4>中国抗战历史超燃混剪</h4>
+            <p>这段历史我们不能忘，向先烈致敬！</p>
+        </div>
+    </div>
+    <div class="playlist-item" onclick="selectVideo(3)">
+        <div class="item-thumbnail">
+            <img src="image/3.png" alt="抗战胜利80周年主题动画">
+            <div class="play-overlay">
+                <div class="play-icon">▶</div>
+            </div>
+            <div class="duration">07:30</div>
+        </div>
+        <div class="item-info">
+            <h4>抗战胜利80周年主题动画</h4>
+            <p>抗战胜利80周年主题动画，有点泪奔！</p>
+        </div>
+    </div>
+</div>
                     </div>
                 </div>
             </div>
         </section>
-           
-
+            
     
 <section id="history" class="section">
     <div class="container">
@@ -585,6 +532,73 @@
         </div>
     </section>
 
+    <section>
+        <div class="candle-memorial">
+    <div class="memorial-header">
+        <h3>点亮烛光，缅怀先烈</h3>
+        <p class="memorial-subtitle">每一束光芒都承载着永恒的纪念</p>
+    </div>
+    
+    <div class="candles-container">
+        <div class="candle-altar">
+            <div class="candle-wrapper" data-candle-id="1">
+                <div class="candle" onclick="lightCandle(this)">
+                    <div class="candle-body">
+                        <div class="candle-top"></div>
+                    </div>
+                    <div class="flame">
+                        <div class="flame-inner"></div>
+                        <div class="flame-outer"></div>
+                        <div class="flame-glow"></div>
+                    </div>
+                    <div class="wick"></div>
+                </div>
+                <div class="candle-label">纪念</div>
+            </div>
+            
+            <div class="candle-wrapper" data-candle-id="2">
+                <div class="candle" onclick="lightCandle(this)">
+                    <div class="candle-body">
+                        <div class="candle-top"></div>
+                    </div>
+                    <div class="flame">
+                        <div class="flame-inner"></div>
+                        <div class="flame-outer"></div>
+                        <div class="flame-glow"></div>
+                    </div>
+                    <div class="wick"></div>
+                </div>
+                <div class="candle-label">缅怀</div>
+            </div>
+            
+            <div class="candle-wrapper" data-candle-id="3">
+                <div class="candle" onclick="lightCandle(this)">
+                    <div class="candle-body">
+                        <div class="candle-top"></div>
+                    </div>
+                    <div class="flame">
+                        <div class="flame-inner"></div>
+                        <div class="flame-outer"></div>
+                        <div class="flame-glow"></div>
+                    </div>
+                    <div class="wick"></div>
+                </div>
+                <div class="candle-label">传承</div>
+            </div>
+        </div>
+        
+        <div class="candle-stats">
+            <div class="stats-item">
+                <span class="stats-number" id="candle-count">0</span>
+                <span class="stats-label">支烛光已点亮</span>
+            </div>
+            
+        </div>
+    </div>
+</div>
+
+    </section>
+
     <!-- 页脚 -->
     <footer class="footer">
         <div class="container">
@@ -595,3 +609,5 @@
     <script src="script.js"></script>
 </body>
 </html>
+
+
