@@ -64,9 +64,56 @@ const videoData = [
 // 全局变量
 let currentVideoIndex = 0;
 
+// 动态调整播放列表高度
+function adjustPlaylistHeight() {
+    const playlist = document.querySelector('.video-playlist');
+    const items = document.querySelectorAll('.playlist-item');
+    
+    if (window.innerWidth <= 767) {
+        // 计算所需高度
+        let totalHeight = 0;
+        items.forEach(item => {
+            totalHeight += item.offsetHeight + 20; // 包含间距
+        });
+        
+        // 设置最小高度，确保滚动条出现
+        const minHeight = Math.min(totalHeight, 400);
+        playlist.style.minHeight = minHeight + 'px';
+        playlist.style.maxHeight = '400px';
+        playlist.style.height = 'auto';
+    } else {
+        // 桌面端恢复原始设置
+        playlist.style.height = 'calc(100vh - 250px)';
+        playlist.style.maxHeight = '500px';
+        playlist.style.minHeight = '400px';
+    }
+}
+
+// 强制显示播放列表文字
+function forceShowPlaylistText() {
+    const textElements = document.querySelectorAll('.item-info h4, .item-info p, .playlist-header h3');
+    textElements.forEach(el => {
+        // 强制设置样式
+        el.style.display = 'block';
+        el.style.visibility = 'visible';
+        el.style.opacity = '1';
+        el.style.position = 'relative';
+        el.style.zIndex = '10';
+        el.style.fontFamily = "'Microsoft YaHei', 'Arial', sans-serif";
+        
+        // 确保文字颜色正确
+        if (el.tagName === 'H4') {
+            el.style.color = '#333';
+        } else if (el.tagName === 'P') {
+            el.style.color = '#666';
+        }
+    });
+    
+    console.log('强制显示播放列表文字，找到元素:', textElements.length);
+}
+
 // 选择视频函数
 function selectVideo(index) {
-
     console.log(`选择视频: ${index}`);
     currentVideoIndex = index;
     
@@ -83,9 +130,6 @@ function selectVideo(index) {
             item.classList.remove('active');
         }
     });
-
-
-
 
     currentVideoIndex = index;
     
@@ -129,6 +173,12 @@ function selectVideo(index) {
         behavior: 'smooth', 
         block: 'center' 
     });
+    
+    // 调整播放列表高度
+    setTimeout(adjustPlaylistHeight, 100);
+    
+    // 强制显示文字
+    setTimeout(forceShowPlaylistText, 200);
 }
 
 // 从嵌入代码中提取BVID
@@ -167,6 +217,12 @@ function initializeApp() {
     
     // 初始化第一个视频
     selectVideo(0);
+    
+    // 调整播放列表高度
+    setTimeout(adjustPlaylistHeight, 500);
+    
+    // 强制显示文字
+    setTimeout(forceShowPlaylistText, 600);
 }
 
 // 确保DOM完全加载后执行
@@ -208,6 +264,9 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // 等待DOM完全加载
     waitForDOM();
+    
+    // 强制显示文字
+    setTimeout(forceShowPlaylistText, 1000);
     
     // 导航栏滚动效果
     window.addEventListener('scroll', function() {
@@ -295,6 +354,12 @@ document.addEventListener('DOMContentLoaded', function() {
     window.addEventListener('beforeunload', function() {
         saveScrollPosition();
     });
+    
+    // 在窗口大小改变时调整播放列表高度和强制显示文字
+    window.addEventListener('resize', function() {
+        adjustPlaylistHeight();
+        setTimeout(forceShowPlaylistText, 100);
+    });
 });
 
 // 监听页面可见性变化
@@ -341,7 +406,6 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 });
-
 
 let litCount = 0;
 
@@ -453,40 +517,4 @@ document.head.appendChild(style);
 // 页面加载时恢复状态
 document.addEventListener('DOMContentLoaded', function() {
     loadCandleStates();
-});
-
-// 动态调整播放列表高度
-function adjustPlaylistHeight() {
-    const playlist = document.querySelector('.video-playlist');
-    const items = document.querySelectorAll('.playlist-item');
-    
-    if (window.innerWidth <= 767) {
-        // 计算所需高度
-        let totalHeight = 0;
-        items.forEach(item => {
-            totalHeight += item.offsetHeight + 20; // 包含间距
-        });
-        
-        // 设置最小高度
-        const minHeight = Math.max(totalHeight, 400);
-        playlist.style.minHeight = minHeight + 'px';
-        playlist.style.height = 'auto';
-        playlist.style.maxHeight = 'none';
-    }
-}
-
-// 在窗口大小改变时调整
-window.addEventListener('resize', adjustPlaylistHeight);
-
-// 在视频选择后调整
-function selectVideo(index) {
-    // ... 原有代码 ...
-    
-    // 调整播放列表高度
-    setTimeout(adjustPlaylistHeight, 100);
-}
-
-// 页面加载完成后调整
-document.addEventListener('DOMContentLoaded', function() {
-    setTimeout(adjustPlaylistHeight, 500);
 });
