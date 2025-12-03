@@ -723,7 +723,7 @@ h1, h2, h3, h4, h5, h6, p, span, div {
     content: "正在播放";
     position: absolute;
     top: 8px;
-    right: 8px;
+    left: 8px;
     background: linear-gradient(135deg, #c41e3a, #8b0000);
     color: white;
     padding: 4px 10px;
@@ -1163,68 +1163,88 @@ h1, h2, h3, h4, h5, h6, p, span, div {
     }
     
     /* 视频模块移动端修复 */
-    .video-playlist,
-    .playlist-header,
+    .video-playlist {
+        height: auto;
+        max-height: none;
+        min-height: 400px;
+        padding: 20px;
+    }
     
-.playlist-item {
+    .playlist-items {
+        display: grid;
+        grid-template-columns: 1fr; /* 单列布局 */
+        gap: 20px;
+        padding-right: 0;
+    }
+    
+    .playlist-item {
         display: flex;
-        gap: 15px;
-        padding: 18px;
-        border-radius: 12px;
+        flex-direction: column; /* 垂直布局 */
+        padding: 20px;
+        border-radius: 15px;
         background: white;
         border: 1px solid #e0e0e0;
-        box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+        box-shadow: 0 3px 12px rgba(0,0,0,0.1);
         transition: all 0.3s ease;
-        min-height: 100px;
+        min-height: 150px; /* 增加高度 */
         position: relative;
     }
     
+    .item-thumbnail {
+        width: 100%;
+        height: 100px; /* 固定高度 */
+        border-radius: 10px;
+        overflow: hidden;
+        margin-bottom: 15px;
+    }
+    
     .item-info {
+        width: 100%;
         flex: 1;
         display: flex;
         flex-direction: column;
-        justify-content: center;
-        min-width: 0;
-        padding-right: 10px;
-        padding-top: 15px;
+        justify-content: flex-start;
         z-index: 10;
         position: relative;
     }
     
     .item-info h4 {
         color: #333;
-        font-size: 0.95rem;
+        font-size: 1.1rem;
         font-weight: 600;
-        margin-bottom: 6px;
-        line-height: 1.3;
+        margin-bottom: 8px;
+        line-height: 1.4;
         z-index: 10;
         position: relative;
+        font-family: 'Microsoft YaHei', 'Arial', sans-serif !important;
     }
     
     .item-info p {
         color: #666;
-        font-size: 0.8rem;
-        line-height: 1.4;
+        font-size: 0.9rem;
+        line-height: 1.5;
         z-index: 10;
         position: relative;
+        font-family: 'Microsoft YaHei', 'Arial', sans-serif !important;
     }
     
-    /* 将"正在播放"标签移到左上角 */
+    /* 调整"正在播放"标签位置 */
     .playlist-item.active::after {
         content: "正在播放";
         position: absolute;
-        top: 8px;
-        left: 8px;
+        top: 10px;
+        right: 10px; /* 移到右上角 */
         background: linear-gradient(135deg, #c41e3a, #8b0000);
         color: white;
-        padding: 4px 10px;
+        padding: 5px 12px;
         border-radius: 15px;
-        font-size: 0.65rem;
+        font-size: 0.7rem;
         font-weight: 700;
         box-shadow: 0 3px 10px rgba(196, 30, 58, 0.4);
         animation: playingPulse 2s ease-in-out infinite;
-        z-index: 5;
+        z-index: 15;
     }
+
     
     .duration {
         font-size: 0.65rem !important;
