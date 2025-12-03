@@ -112,9 +112,7 @@
             width: 100%;
             max-width: 800px;
             margin:30px auto;
-             display: block;
-
-            
+            display: block;
         }
         
         .video-wrapper {
@@ -126,312 +124,30 @@
             box-shadow: 0 10px 30px rgba(0,0,0,0.2);
             background: #000;
         }
-        
-        .video-wrapper video {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            object-fit: contain;
-        }
-        
-        .video-overlay {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.6);
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            color: white;
-            transition: opacity 0.3s ease;
-            z-index: 2;
-        }
-        
-        .video-overlay.hidden {
-            opacity: 0;
-            pointer-events: none;
-        }
-        
-        .play-button {
-            cursor: pointer;
-            transition: transform 0.3s ease;
-            margin-bottom: 10px;
-        }
-        
-        .play-button:hover {
-            transform: scale(1.15);
-        }
 
-   
-        
-        .video-info {
-            text-align: center;
-            margin-top: 20px;
-        }
-        
-        .video-info h3 {
-            font-size: 1.6rem;
-            margin-bottom: 10px;
-            text-shadow: 0 2px 4px rgba(0,0,0,0.5);
-        }
-        
-        .video-info p {
-            font-size: 1rem;
-            opacity: 0.9;
-        }
-        
-        /* 视频控制栏样式 */
-        .video-controls {
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            background: linear-gradient(transparent, rgba(0,0,0,0.9));
-            padding: 20px;
-            display: flex;
-            align-items: center;
-            gap: 15px;
-            opacity: 0;
-            transition: opacity 0.3s ease;
-            z-index: 5;
-        }
-        
-        .video-wrapper:hover .video-controls {
-            opacity: 1;
-        }
-        
-        /* 播放/暂停按钮 */
-        .play-pause-btn {
-            background: rgba(255,255,255,0.2);
-            border: none;
-            width: 45px;
-            height: 45px;
-            border-radius: 50%;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: all 0.3s ease;
-            color: white;
-            font-size: 18px;
-        }
-        
-        .play-pause-btn:hover {
-            background: rgba(255,255,255,0.3);
-            transform: scale(1.1);
-        }
-        
-        /* 进度条容器 */
-        .progress-container {
-            flex: 1;
-            height: 8px;
-            background: rgba(255,255,255,0.3);
-            border-radius: 4px;
-            cursor: pointer;
-            position: relative;
-        }
-        
-        .progress-bar {
-            height: 100%;
-            background: #c41e3a;
-            border-radius: 4px;
-            width: 0%;
-            transition: width 0.1s linear;
-            position: relative;
-        }
-        
-        .progress-bar::before {
-            content: '';
-            position: absolute;
-            right: -10px;
-            top: -6px;
-            width: 20px;
-            height: 20px;
-            background: #c41e3a;
-            border-radius: 50%;
-            border: 3px solid white;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.3);
-        }
-        
-        /* 缓冲进度条 */
-        .buffer-bar {
-            height: 100%;
-            background: rgba(255,255,255,0.4);
-            border-radius: 4px;
-            width: 0%;
+        /* 嵌入视频样式 */
+        .video-wrapper iframe {
             position: absolute;
             top: 0;
             left: 0;
-            z-index: -1;
-        }
-        
-        /* 时间显示 */
-        .time-display {
-            color: white;
-            font-size: 14px;
-            min-width: 120px;
-            text-align: center;
-            font-family: monospace;
-            background: rgba(0,0,0,0.5);
-            padding: 5px 10px;
-            border-radius: 5px;
-        }
-        
-        /* 音量控制 */
-        .volume-container {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-        
-        .volume-btn {
-            background: none;
-            border: none;
-            color: white;
-            cursor: pointer;
-            font-size: 20px;
-            transition: all 0.3s ease;
-            width: 35px;
-            height: 35px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            border-radius: 50%;
-        }
-        
-        .volume-btn:hover {
-            background: rgba(255,255,255,0.2);
-            transform: scale(1.1);
-        }
-        
-        .volume-slider {
-            width: 100px;
-            height: 6px;
-            background: rgba(255,255,255,0.3);
-            border-radius: 3px;
-            cursor: pointer;
-            position: relative;
-        }
-        
-        .volume-bar {
+            width: 100%;
             height: 100%;
-            background: #c41e3a;
-            border-radius: 3px;
-            width: 70%;
-            transition: width 0.1s ease;
-        }
-        
-        /* 全屏按钮 */
-        .fullscreen-btn {
-            background: none;
             border: none;
-            color: white;
-            cursor: pointer;
-            font-size: 20px;
-            transition: all 0.3s ease;
-            width: 35px;
-            height: 35px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            border-radius: 50%;
-        }
-        
-        .fullscreen-btn:hover {
-            background: rgba(255,255,255,0.2);
-            transform: scale(1.1);
-        }
-        
-        /* 加载指示器 */
-        .loading-spinner {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            width: 60px;
-            height: 60px;
-            border: 4px solid rgba(255,255,255,0.3);
-            border-top: 4px solid #c41e3a;
-            border-radius: 50%;
-            animation: spin 1s linear infinite;
-            z-index: 10;
-            display: none;
-        }
-        
-        @keyframes spin {
-            0% { transform: translate(-50%, -50%) rotate(0deg); }
-            100% { transform: translate(-50%, -50%) rotate(360deg); }
-        }
-        
-        /* 键盘快捷键提示 */
-        .keyboard-hints {
-            position: absolute;
-            top: 20px;
-            right: 20px;
-            background: rgba(0,0,0,0.9);
-            color: white;
-            padding: 20px;
-            border-radius: 10px;
-            font-size: 13px;
-            opacity: 0;
-            transition: opacity 0.3s ease;
-            pointer-events: none;
-            z-index: 100;
-            max-width: 250px;
-            border: 1px solid rgba(255,255,255,0.2);
-        }
-        
-        .keyboard-hints.show {
-            opacity: 1;
-        }
-        
-        .keyboard-hints h4 {
-            margin-bottom: 15px;
-            color: #c41e3a;
-            font-size: 16px;
-        }
-        
-        .keyboard-hints ul {
-            list-style: none;
-            padding: 0;
-            margin: 0;
-        }
-        
-        .keyboard-hints li {
-            margin: 8px 0;
-            display: flex;
-            justify-content: space-between;
-            gap: 15px;
-            align-items: center;
-        }
-        
-        .keyboard-hints kbd {
-            background: rgba(255,255,255,0.2);
-            padding: 3px 8px;
-            border-radius: 4px;
-            font-family: monospace;
-            border: 1px solid rgba(255,255,255,0.3);
-            font-size: 11px;
-            font-weight: bold;
+            border-radius: 15px;
         }
         
         .back-link {
             position: fixed;
-    top: 90px;
-    left: 20px;
-    background: #c41e3a;
-    color: white;
-    padding: 8px 15px;
-    text-decoration: none;
-    border-radius: 5px;
-    font-size: 14px;
-    z-index: 999;
-    transition: all 0.3s ease;
+            top: 90px;
+            left: 20px;
+            background: #c41e3a;
+            color: white;
+            padding: 8px 15px;
+            text-decoration: none;
+            border-radius: 5px;
+            font-size: 14px;
+            z-index: 999;
+            transition: all 0.3s ease;
         }
         
         .back-link:hover {
@@ -453,20 +169,6 @@
                 width: 200px;
                 height: 200px;
             }
-            
-            .video-controls {
-                padding: 15px;
-                gap: 10px;
-            }
-            
-            .time-display {
-                min-width: 100px;
-                font-size: 12px;
-            }
-            
-            .volume-slider {
-                width: 80px;
-            }
         }
     </style>
 </head>
@@ -483,8 +185,7 @@
             </ul>
         </div>
     </nav>
-<a href="index.html#heroes" class="back-link">返回</a>
-
+    <a href="index.html#heroes" class="back-link">返回</a>
 
     <div class="hero-detail-container">
         <div class="hero-detail-header">
@@ -501,8 +202,6 @@
         </div>
         
         <!-- 视频部分将通过JavaScript动态添加 -->
-        
-        
     </div>
 
     <!-- 页脚 -->
@@ -513,30 +212,23 @@
     </footer>
 
     <script>
-        // 视频控制相关变量
-        let video = null;
-        let overlay = null;
-        let controls = null;
-        let progressBar = null;
-        let bufferBar = null;
-        let timeDisplay = null;
-        let volumeBar = null;
-        let volumeSlider = null;
-        let playIcon = null;
-        let volumeIcon = null;
-        let fullscreenIcon = null;
-        let loadingSpinner = null;
-        let keyboardHints = null;
-        let progressContainer = null;
-
-        // 英雄详细数据
+        // 英雄详细数据 - 使用B站嵌入视频
         const heroData = {
             yangjingyu: {
                 name: "杨靖宇",
                 subtitle: "抗日民族英雄、东北抗日联军主要创建者和领导人之一",
                 lifeSpan: "1905年2月13日—1940年2月23日",
                 image: "image/杨靖宇.png",
-                video: "video/杨靖宇.mp4",
+                video: "embed",
+                embedCode: `<iframe src="//player.bilibili.com/player.html?bvid=BV1EY411G781&high_quality=1&danmaku=0&autoplay=false" 
+                            scrolling="no" 
+                            border="0" 
+                            frameborder="no" 
+                            framespacing="0" 
+                            allowfullscreen="true" 
+                            width="100%" 
+                            height="100%">
+                            </iframe>`,
                 videoTitle: "杨靖宇将军英雄事迹",
                 videoDesc: "东北抗日联军总司令杨靖宇的英勇抗战历程",
                 content: `
@@ -596,7 +288,16 @@
                 subtitle: "中国无产阶级革命家、军事家、八路军高级将领",
                 lifeSpan: "1905年3月15日-1942年5月25日",
                 image: "image/左权.png",
-                video: "video/左权.mp4",
+                video: "embed",
+                embedCode: `<iframe src="//player.bilibili.com/player.html?bvid=BV19f4y1x7mG&high_quality=1&danmaku=0&autoplay=false" 
+                            scrolling="no" 
+                            border="0" 
+                            frameborder="no" 
+                            framespacing="0" 
+                            allowfullscreen="true" 
+                            width="100%" 
+                            height="100%">
+                            </iframe>`,
                 videoTitle: "左权将军英雄事迹",
                 videoDesc: "八路军副总参谋长左权的英勇抗战历程",
                 content: `
@@ -640,7 +341,16 @@
                 subtitle: "中华民族抗日英雄、革命烈士",
                 lifeSpan: "1905年10月25日—1936年8月2日",
                 image: "image/赵一曼.png",
-                video: "video/赵一曼.mp4",
+                video: "embed",
+                embedCode: `<iframe src="//player.bilibili.com/player.html?bvid=BV1wKbKzyEyy&high_quality=1&danmaku=0&autoplay=false" 
+                            scrolling="no" 
+                            border="0" 
+                            frameborder="no" 
+                            framespacing="0" 
+                            allowfullscreen="true" 
+                            width="100%" 
+                            height="100%">
+                            </iframe>`,
                 videoTitle: "赵一曼烈士英雄事迹",
                 videoDesc: "抗日女英雄赵一曼的英勇抗战历程",
                 content: `
@@ -688,7 +398,16 @@
                 subtitle: "抗日战争革命烈士",
                 lifeSpan: "1915/1916-1940",
                 image: "image/李林.png",
-                video: "video/李林.mp4",
+                video: "embed",
+                embedCode: `<iframe src="//player.bilibili.com/player.html?bvid=BV1bu411B7Jg&high_quality=1&danmaku=0&autoplay=false" 
+                            scrolling="no" 
+                            border="0" 
+                            frameborder="no" 
+                            framespacing="0" 
+                            allowfullscreen="true" 
+                            width="100%" 
+                            height="100%">
+                            </iframe>`,
                 videoTitle: "李林烈士英雄事迹",
                 videoDesc: "抗日女英雄李林的英勇抗战历程",
                 content: `
@@ -732,7 +451,16 @@
                 subtitle: "抗日民族英雄、烈士",
                 lifeSpan: "1901年—1944年2月7日",
                 image: "image/马本斋.png",
-                video: "video/马本斋.mp4",
+                video: "embed",
+                embedCode: `<iframe src="//player.bilibili.com/player.html?bvid=BV1Be4y1f7XT&high_quality=1&danmaku=0&autoplay=false" 
+                            scrolling="no" 
+                            border="0" 
+                            frameborder="no" 
+                            framespacing="0" 
+                            allowfullscreen="true" 
+                            width="100%" 
+                            height="100%">
+                            </iframe>`,
                 videoTitle: "马本斋司令英雄事迹",
                 videoDesc: "回民支队司令员马本斋的英勇抗战历程",
                 content: `
@@ -777,7 +505,16 @@
                 subtitle: "抗日英烈、原国民革命军第二十九军副军长",
                 lifeSpan: "1892年10月29日—1937年7月28日",
                 image: "image/佟麟阁.png",
-                video: "video/佟麟阁.mp4",
+                video: "embed",
+                embedCode: `<iframe src="//player.bilibili.com/player.html?bvid=BV1Bee4zCErn&high_quality=1&danmaku=0&autoplay=false" 
+                            scrolling="no" 
+                            border="0" 
+                            frameborder="no" 
+                            framespacing="0" 
+                            allowfullscreen="true" 
+                            width="100%" 
+                            height="100%">
+                            </iframe>`,
                 videoTitle: "佟麟阁将军英雄事迹",
                 videoDesc: "抗日英烈佟麟阁的英勇抗战历程",
                 content: `
@@ -818,479 +555,59 @@
             }
         };
 
-// 找到将要插入内容的容器
-    const contentContainer = document.getElementById('event-content');
-
-
-       // 从URL获取英雄ID并显示相应内容
-document.addEventListener('DOMContentLoaded', function() {
-    const params = new URLSearchParams(window.location.search);
-    const heroId = params.get('id');
-    
-    // 获取英雄数据，默认为杨靖宇
-    const hero = heroData[heroId] || heroData.yangjingyu;
-    
-    // 更新页面内容
-    document.getElementById('hero-name').textContent = hero.name;
-    document.getElementById('hero-subtitle').textContent = hero.subtitle;
-    document.getElementById('hero-life-span').textContent = hero.lifeSpan;
-    document.getElementById('hero-image').src = hero.image;
-    document.getElementById('hero-content').innerHTML = hero.content;
-    
-    // 添加视频部分
-    addVideoSection(hero);
-});
-
-           
+        // 从URL获取英雄ID并显示相应内容
+        document.addEventListener('DOMContentLoaded', function() {
+            const params = new URLSearchParams(window.location.search);
+            const heroId = params.get('id');
+            
+            // 获取英雄数据，默认为杨靖宇
+            const hero = heroData[heroId] || heroData.yangjingyu;
+            
+            // 更新页面内容
+            document.getElementById('hero-name').textContent = hero.name;
+            document.getElementById('hero-subtitle').textContent = hero.subtitle;
+            document.getElementById('hero-life-span').textContent = hero.lifeSpan;
+            document.getElementById('hero-image').src = hero.image;
+            document.getElementById('hero-content').innerHTML = hero.content;
+            
+            // 添加视频部分
+            addVideoSection(hero);
+        });
 
         // 添加视频部分
-function addVideoSection(hero) {
-    const videoSection = document.createElement('div');
-    videoSection.className = 'hero-video-section';
-    videoSection.innerHTML = `
-        <h2 class="hero-video-title">${hero.name}英雄事迹影像</h2>
-        <div class="video-container">
-            <div class="video-wrapper">
-                <video id="hero-video" 
-               
-                       preload="metadata">
-                    <source src="${hero.video}" type="video/mp4">
-                    您的浏览器不支持视频播放
-                </video>
-                
-               
-                
-                <!-- 视频覆盖层 -->
-                <div class="video-overlay" id="video-overlay">
-                    <div class="play-button" onclick="togglePlay()">
-                        <svg width="80" height="80" viewBox="0 0 80 80">
-                            <circle cx="40" cy="40" r="38" fill="rgba(196, 30, 58, 0.9)"/>
-                            <path d="M30 25 L30 55 L55 40 Z" fill="white"/>
-                        </svg>
-                    </div>
-                    <div class="video-info">
-                        <h3>${hero.videoTitle}</h3>
-                        <p>${hero.videoDesc}</p>
+        function addVideoSection(hero) {
+            const videoSection = document.createElement('div');
+            videoSection.className = 'hero-video-section';
+            videoSection.innerHTML = `
+                <h2 class="hero-video-title">${hero.name}英雄事迹影像</h2>
+                <div class="video-container">
+                    <div class="video-wrapper">
+                        <!-- 视频内容将通过JavaScript动态插入 -->
                     </div>
                 </div>
-                
-                <!-- 视频控制栏 -->
-                <div class="video-controls" id="video-controls">
-                    <button class="play-pause-btn" id="play-pause-btn" onclick="togglePlay()">
-                        <span id="play-icon">▶</span>
-                    </button>
-                    
-                    <div class="progress-container" id="progress-container">
-                        <div class="buffer-bar" id="buffer-bar"></div>
-                        <div class="progress-bar" id="progress-bar"></div>
-                    </div>
-                    
-                    <div class="time-display" id="time-display">
-                        00:00 / 00:00
-                    </div>
-                    
-                    <div class="volume-container">
-                        <button class="volume-btn" id="volume-btn" onclick="toggleMute()">
-                            <span id="volume-icon">🔊</span>
-                        </button>
-                        <div class="volume-slider" id="volume-slider">
-                            <div class="volume-bar" id="volume-bar"></div>
-                        </div>
-                    </div>
-                    
-                    <button class="fullscreen-btn" onclick="toggleFullscreen()">
-                        <span id="fullscreen-icon">⛶</span>
-                    </button>
-                </div>
-                
-                <!-- 键盘快捷键提示 -->
-                <div class="keyboard-hints" id="keyboard-hints">
-                    <h4>键盘快捷键</h4>
-                    <ul>
-                        <li><span>播放/暂停</span> <kbd>空格</kbd></li>
-                        <li><span>快进10秒</span> <kbd>→</kbd></li>
-                        <li><span>后退10秒</span> <kbd>←</kbd></li>
-                        <li><span>音量增加</span> <kbd>↑</kbd></li>
-                        <li><span>音量减少</span> <kbd>↓</kbd></li>
-                        <li><span>静音</span> <kbd>M</kbd></li>
-                        <li><span>全屏</span> <kbd>F</kbd></li>
-                        <li><span>显示帮助</span> <kbd>H</kbd></li>
-                    </ul>
-                </div>
-            </div>
-        </div>
-    `;
-    
-    // 将视频部分添加到容器末尾
-    const container = document.querySelector('.hero-detail-container');
-    container.appendChild(videoSection);
-    
-    // 延迟初始化视频控制器
-    setTimeout(() => {
-        initializeVideoControls();
-    }, 100);
-}
-
-
-        // 初始化视频控制器
-        function initializeVideoControls() {
-
-            // 获取视频相关元素
-            video = document.getElementById('hero-video');
-            overlay = document.getElementById('video-overlay');
-            controls = document.getElementById('video-controls');
-            progressBar = document.getElementById('progress-bar');
-            bufferBar = document.getElementById('buffer-bar');
-            timeDisplay = document.getElementById('time-display');
-            volumeBar = document.getElementById('volume-bar');
-            volumeSlider = document.getElementById('volume-slider');
-            playIcon = document.getElementById('play-icon');
-            volumeIcon = document.getElementById('volume-icon');
-            fullscreenIcon = document.getElementById('fullscreen-icon');
-            loadingSpinner = document.getElementById('loading-spinner');
-            keyboardHints = document.getElementById('keyboard-hints');
-            progressContainer = document.getElementById('progress-container');
-            
-            if (!video) {
-                console.error('视频元素未找到');
-                return;
-            }
-            
-            // 绑定视频事件
-            bindVideoEvents();
-            
-            // 绑定控制栏事件
-            bindControlEvents();
-            
-            // 绑定键盘事件
-            bindKeyboardEvents();
-            
-            // 初始化音量
-            video.volume = 0.7;
-            updateVolumeBar();
-        }
-
-        // 绑定视频事件
-        function bindVideoEvents() {
-            // 视频加载开始
-            video.addEventListener('loadstart', () => {
-                showLoading(true);
-            });
-            
-            // 视频可以播放
-            video.addEventListener('canplay', () => {
-                showLoading(false);
-            });
-            
-            // 视频缓冲
-            video.addEventListener('progress', updateBufferBar);
-            
-            // 视频时间更新
-            video.addEventListener('timeupdate', updateProgress);
-            
-            // 视频加载元数据
-            video.addEventListener('loadedmetadata', () => {
-                updateTimeDisplay();
-            });
-            
-
-            // 视频播放事件
-    video.addEventListener('play', () => {
-        overlay.classList.add('hidden');
-        if (playIcon) {
-            playIcon.textContent = '❚❚';
-        }
-    });
-    
-    // 视频暂停事件
-    video.addEventListener('pause', () => {
-        if (!video.ended) {
-            overlay.classList.remove('hidden');
-        }
-        if (playIcon) {
-            playIcon.textContent = '▶';
-        }
-    });
-    
-    // 视频结束事件
-    video.addEventListener('ended', () => {
-        overlay.classList.remove('hidden');
-        if (playIcon) {
-            playIcon.textContent = '▶';
-        }
-        // 重置进度条
-        const progressBar = document.getElementById('progress-bar');
-        if (progressBar) {
-            progressBar.style.width = '0%';
-        }
-    });
-    
-    // 覆盖层点击事件
-    overlay.addEventListener('click', (e) => {
-        e.stopPropagation();
-        togglePlay();
-    });
-    
-    // 视频点击事件
-    video.addEventListener('click', (e) => {
-        e.stopPropagation();
-        togglePlay();
-    });
-            
-            
-            // 音量变化
-            video.addEventListener('volumechange', updateVolumeBar);
-        }
-
-        // 绑定控制栏事件
-        function bindControlEvents() {
-
-              // 视频播放事件
-    video.addEventListener('play', () => {
-        overlay.classList.add('hidden');
-        if (playIcon) {
-            playIcon.textContent = '❚❚';
-        }
-    });
-    
-    // 视频暂停事件
-    video.addEventListener('pause', () => {
-        if (!video.ended) {
-            overlay.classList.remove('hidden');
-        }
-        if (playIcon) {
-            playIcon.textContent = '▶';
-        }
-    });
-    
-    // 视频结束事件
-    video.addEventListener('ended', () => {
-        overlay.classList.remove('hidden');
-        if (playIcon) {
-            playIcon.textContent = '▶';
-        }
-        // 重置进度条
-        const progressBar = document.getElementById('progress-bar');
-        if (progressBar) {
-            progressBar.style.width = '0%';
-        }
-    });
-
-
-
-            // 进度条点击
-            progressContainer.addEventListener('click', (e) => {
-                const rect = progressContainer.getBoundingClientRect();
-                const pos = (e.clientX - rect.left) / rect.width;
-                video.currentTime = pos * video.duration;
-            });
-            
-            // 音量滑块点
-            volumeSlider.addEventListener('click', (e) => {
-                const rect = volumeSlider.getBoundingClientRect();
-                const pos = (e.clientX - rect.left) / rect.width;
-                video.volume = pos;
-            });
-            
-           
-        }
-
-        // 绑定键盘事件
-        function bindKeyboardEvents() {
-            document.addEventListener('keydown', (e) => {
-                // 只在视频区域或聚焦时响应
-                if (!video || !document.activeElement.closest('.video-container')) {
-                    return;
-                }
-                
-                switch(e.key.toLowerCase()) {
-                    case ' ': // 空格键
-                        e.preventDefault();
-                        togglePlay();
-                        break;
-                    case 'arrowleft': // 左箭头
-                        e.preventDefault();
-                        video.currentTime = Math.max(0, video.currentTime - 10);
-                        break;
-                    case 'arrowright': // 右箭头
-                        e.preventDefault();
-                        video.currentTime = Math.min(video.duration, video.currentTime + 10);
-                        break;
-                    case 'arrowup': // 上箭头
-                        e.preventDefault();
-                        video.volume = Math.min(1, video.volume + 0.1);
-                        break;
-                    case 'arrowdown': // 下箭头
-                        e.preventDefault();
-                        video.volume = Math.max(0, video.volume - 0.1);
-                        break;
-                    case 'm': // M键静音
-                        e.preventDefault();
-                        toggleMute();
-                        break;
-                    case 'f': // F键全屏
-                        e.preventDefault();
-                        toggleFullscreen();
-                        break;
-                    case 'h': // H键显示帮助
-                        e.preventDefault();
-                        toggleKeyboardHints();
-                        break;
-                }
-            });
-        }
-
-       
-       // 播放/暂停切换函数
-function togglePlay() {
-    const video = document.getElementById('hero-video');
-    const overlay = document.getElementById('video-overlay');
-    const playIcon = document.getElementById('play-icon');
-    
-    if (!video) {
-        console.error('视频元素未找到');
-        return;
-    }
-    
-    if (video.paused) {
-        video.play().then(() => {
-            // 播放成功，隐藏覆盖层
-            overlay.classList.add('hidden');
-            // 更新播放按钮图标
-            if (playIcon) {
-                playIcon.textContent = '❚❚';
-            }
-        }).catch(error => {
-            console.error('播放失败:', error);
-            showErrorMessage('视频播放失败');
-        });
-    } else {
-        video.pause();
-        // 暂停时显示覆盖层（如果视频未结束）
-        if (!video.ended) {
-            overlay.classList.remove('hidden');
-        }
-        // 更新播放按钮图标
-        if (playIcon) {
-            playIcon.textContent = '▶';
-        }
-    }
-}
-
-
-        // 静音切换
-        function toggleMute() {
-            video.muted = !video.muted;
-        }
-
-        // 全屏切换
-        function toggleFullscreen() {
-            const videoWrapper = document.querySelector('.video-wrapper');
-            
-            if (!document.fullscreenElement) {
-                videoWrapper.requestFullscreen().catch(err => {
-                    console.error('全屏失败:', err);
-                });
-                fullscreenIcon.textContent = '⛶';
-            } else {
-                document.exitFullscreen();
-                fullscreenIcon.textContent = '⛶';
-            }
-        }
-
-        // 显示/隐藏键盘提示
-        function toggleKeyboardHints() {
-            keyboardHints.classList.toggle('show');
-            
-            // 3秒后自动隐藏
-            if (keyboardHints.classList.contains('show')) {
-                setTimeout(() => {
-                    keyboardHints.classList.remove('show');
-                }, 3000);
-            }
-        }
-
-        // 更新进度条
-        function updateProgress() {
-            if (video.duration) {
-                const progress = (video.currentTime / video.duration) * 100;
-                progressBar.style.width = progress + '%';
-                updateTimeDisplay();
-            }
-        }
-
-        // 更新缓冲条
-        function updateBufferBar() {
-            if (video.buffered.length > 0) {
-                const bufferedEnd = video.buffered.end(video.buffered.length - 1);
-                const duration = video.duration;
-                if (duration) {
-                    bufferBar.style.width = ((bufferedEnd / duration) * 100) + '%';
-                }
-            }
-        }
-
-        // 更新时间显示
-        function updateTimeDisplay() {
-            const current = formatTime(video.currentTime);
-            const duration = formatTime(video.duration);
-            timeDisplay.textContent = `${current} / ${duration}`;
-        }
-
-        // 更新音量条
-        function updateVolumeBar() {
-            const volume = video.muted ? 0 : video.volume;
-            volumeBar.style.width = (volume * 100) + '%';
-            
-            // 更新音量图标
-            if (video.muted || volume === 0) {
-                volumeIcon.textContent = '🔇';
-            } else if (volume < 0.5) {
-                volumeIcon.textContent = '🔉';
-            } else {
-                volumeIcon.textContent = '🔊';
-            }
-        }
-
-        // 格式化时间
-        function formatTime(seconds) {
-            if (isNaN(seconds)) return '00:00';
-            
-            const minutes = Math.floor(seconds / 60);
-            const secs = Math.floor(seconds % 60);
-            return `${minutes.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
-        }
-
-        // 显示/隐藏加载指示器
-        function showLoading(show) {
-            loadingSpinner.style.display = show ? 'block' : 'none';
-        }
-
-        // 显示错误信息
-        function showErrorMessage(message) {
-            const errorDiv = document.createElement('div');
-            errorDiv.style.cssText = `
-                position: absolute;
-                top: 50%;
-                left: 50%;
-                transform: translate(-50%, -50%);
-                background: rgba(255,0,0,0.9);
-                color: white;
-                padding: 20px;
-                border-radius: 8px;
-                z-index: 1000;
-                text-align: center;
             `;
-            errorDiv.textContent = message;
             
-            const videoWrapper = document.querySelector('.video-wrapper');
-            videoWrapper.appendChild(errorDiv);
+            // 将视频部分添加到容器末尾
+            const container = document.querySelector('.hero-detail-container');
+            container.appendChild(videoSection);
             
-            setTimeout(() => {
-                if (errorDiv.parentNode) {
-                    errorDiv.parentNode.removeChild(errorDiv);
-                }
-            }, 3000);
+            // 根据视频类型渲染内容
+            const videoWrapper = videoSection.querySelector('.video-wrapper');
+            if (hero.video === "embed") {
+                // 使用嵌入代码
+                videoWrapper.innerHTML = hero.embedCode;
+            } else {
+                // 原有的video标签逻辑（保留兼容性）
+                videoWrapper.innerHTML = `
+                    <video id="hero-video" 
+                           poster="${hero.image}" 
+                           preload="metadata"
+                           controls>
+                        <source src="${hero.video}" type="video/mp4">
+                        您的浏览器不支持视频播放
+                    </video>
+                `;
+            }
         }
 
         // 导航栏滚动效果
